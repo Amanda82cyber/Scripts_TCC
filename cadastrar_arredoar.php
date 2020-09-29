@@ -6,6 +6,27 @@
             var temp = "";
             $(document).ready(function(){
                 $("#q_tipo").attr("disabled", true);
+                select_campanha();
+
+                $("#cad_campanha").click(function(){
+                    if(!(($("#desc1").val() == "") && ($("#data_ini").val() == "0000-00-00") && ($("#data_ter").val() == "0000-00-00"))){
+                        $.ajax({
+                            url: "inserir_campanhas.php",
+                            type: "post",
+                            data: {descricao: $("#desc1").val(), data_ini: $("#data_ini").val(), data_ter: $("#data_ter").val()},
+                            success: function(data){
+                                if(data == 1){
+                                    $("#msn1").html("*Campanha cadastrada com sucesso!").css("color", "green");
+                                    select_campanha();
+                                }else{
+                                    $("#msn1").html("*Erro: " + data).css("color", "red");
+                                }
+                            }
+                        });
+                    }else{
+                        $("#msn1").html("*Preencha todos os campos!").css("color", "red");
+                    }
+                });
             });
 
             (function() {
@@ -18,64 +39,29 @@
                     var validation = Array.prototype.filter.call(forms, function(form) {
                         form.addEventListener('submit', function(event) {
                         if (form.checkValidity()){
-                            if($("#senha").val() == $("#confirmar_senha").val()){
-                                if(oqe == "Jurídica"){
-                                    $.ajax({
-                                        url: "inserir_usuario.php",
-                                        type: "post",
-                                        data: {cnpj: $("#cnpj").val(), nome_fant: $("#nome_fant").val(), razao_social: $("#razao_social").val(), nome_repre: $("#nome_repre").val(), cpf_repre: $("#cpf_repre").val(), email: $("#email").val(), tel: $("#tel").val(), cep: $("#cep").val(), bairro: $("#bairro").val(), cid: $("#cid").val(), estado: $("#estado").val(), log: $("#log").val(), num: $("#num").val(), senha: $("#senha").val(), oqe},
-                                        success: function(data){
-                                            if(data == 1){
-                                                $("#cnpj").val("");
-                                                $("#nome_fant").val("");
-                                                $("#razao_social").val("");
-                                                $("#nome_repre").val("");
-                                                $("#cpf_repre").val("");
-                                                $("#email").val("");
-                                                $("#tel").val("");
-                                                $("#cep").val("");
-                                                $("#bairro").val("");
-                                                $("#cid").val("");
-                                                $("#estado").val("");
-                                                $("#log").val("");
-                                                $("#num").val("");
-                                                $("#senha").val("");
-                                                $("#confirmar_senha").val("");
-                                                $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
-                                            }else{
-                                                $("#msn").html("Erro: " + data).css("color", "red");
-                                            }
+                            if(!($("#arredoar").val() == null)){
+                                $.ajax({
+                                    url: "inserir_arredoar.php",
+                                    type: "post",
+                                    data: {arre_doar: $("#arredoar").val(), desc: $("#desc").val(), quant: $("#quant").val(), tipo: $("#tipo").val(), q_tipo: $("#q_tipo").val(), data_inicio: $("#data_inicio").val(), data_fim: $("#data_fim").val(), campanha: $("#campanha").val()},
+                                    success: function(data){
+                                        if(data == 1){
+                                            $("#arredoar").val("");
+                                            $("#desc").val("");
+                                            $("#quant").val("");
+                                            $("#tipo").val("");
+                                            $("#q_tipo").val("");
+                                            $("#data_inicio").val("");
+                                            $("#data_fim").val("");
+                                            $("#campanha").val("");
+                                            $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
+                                        }else{
+                                            $("#msn").html("Erro: " + data).css("color", "red");
                                         }
-                                    });
-                                }else{
-                                    $.ajax({
-                                        url: "inserir_usuario.php",
-                                        type: "post",
-                                        data: {cpf: $("#cpf").val(), nome: $("#nome").val(), cel: $("#cel").val(), tel: $("#tel").val(), cep: $("#cep").val(), bairro: $("#bairro").val(), cid: $("#cid").val(), estado: $("#estado").val(), log: $("#log").val(), num: $("#num").val(), senha: $("#senha").val(), email: $("#email").val(), oqe},
-                                        success: function(data){
-                                            if(data == 1){
-                                                $("#cpf").val("");
-                                                $("#nome").val("");
-                                                $("#cel").val("");
-                                                $("#tel").val("");
-                                                $("#cep").val("");
-                                                $("#bairro").val("");
-                                                $("#cid").val("");
-                                                $("#estado").val("");
-                                                $("#log").val("");
-                                                $("#num").val("");
-                                                $("#senha").val("");
-                                                $("#email").val("");
-                                                $("#confirmar_senha").val("");
-                                                $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
-                                            }else{
-                                                $("#msn").html("Erro: " + data).css("color", "red");
-                                            }
-                                        }
-                                    });
-                                }
+                                    }
+                                });
                             }else{
-                                $("#msn").html("Os campos 'Senha' e 'Confirmar Senha' devem ser iguais!!").css("color", "red");
+                                $("#msn").html("O cadastro é de que? Doação ou arrecadação? Selecione uma opção!").css("color", "red");
                             }
                         } else {
                             $("#msn").html("*Preencha os campos obrigatórios!").css("color", "red");
@@ -101,6 +87,27 @@
                 }
             }
 
+            function cadastrar_campanha(valor){
+                if(valor == "CADASTRAR NOVA"){
+                    $('#nova_campanha').modal('show');
+                }
+            }
+
+            function select_campanha(){
+                $("#campanha").html("");
+                $.ajax({
+                    url: "select_campanha.php",
+                    type: "get",
+                    success: function(matriz){
+                        option = '<option value = "" selected disabled>ESCOLHA UMA OPÇÃO</option>';
+                        for(i=0; i<matriz["campanhas"].length; i++){
+                            option += '<option value = "' + matriz["campanhas"][i].id_campanha + '">' + matriz["campanhas"][i].descricao + ' (' + matriz["campanhas"][i].data_inicio + ' - ' + matriz["campanhas"][i].data_fim + ') </option>';
+                        }
+                        $("#campanha").html(option);
+                    }
+                });
+            }
+
             function nova_campanha(opcao){
                 if(temp == ""){
                     temp = $("#campanha").html();
@@ -108,7 +115,7 @@
 
                 if(opcao == "ARRECADAÇÃO"){
                     incremento = $("#campanha").html();
-                    incremento += '<option><button type = "button" class = "btn btn-outline-primary m-2" data-toggle = "modal" data-target = "#nova_campanha">CADASTRAR NOVA</button></option>';
+                    incremento += '<option value = "CADASTRAR NOVA">CADASTRAR NOVA</option>';
                     $("#campanha").html(incremento);
                 }else{
                     $("#campanha").html(temp);
@@ -116,7 +123,7 @@
             }
         </script>
         
-        <div style = "margin-top:50px;" class = "container-fluid">
+        <div style = "margin-top:30px;" class = "container-fluid">
             <div class = "row">
                 <div class = "col-md-1 col-sm-12 col-xs-12"></div>
                 
@@ -172,35 +179,25 @@
 
                                     <div class = "form-group col-md-3">
                                         <label class = "form-control-placeholder" for = "data_inicio">Data de Início</label>
-                                        <input type = "date" class = "form-control" id = "data_inicio" />
+                                        <input type = "date" class = "form-control" id = "data_inicio" required />
                                     </div>
 
                                     <div class = "form-group col-md-3">
                                         <label class = "form-control-placeholder" for = "data_fim">Data de Término</label>
-                                        <input type = "date" class = "form-control" id = "data_fim" />
+                                        <input type = "date" class = "form-control" id = "data_fim" required />
                                     </div>
 
                                     <div class = "form-group col-md-4">
                                         <label class = "form-control-placeholder" for = "campanha">Campanha</label>
-                                            <select class = "form-control" id = "campanha" required>
-                                                <option value = "" selected disabled>ESCOLHA UMA OPÇÃO</option>
-                                                <?php
-                                                    include("conexao.php");
-
-                                                    $consulta = "SELECT * FROM campanha";
-                                                    $resultado = mysqli_query($conexao, $consulta);
-
-                                                    while($linha = mysqli_fetch_assoc($resultado)){
-                                                        echo '<option value = "' . $linha["id_campanha"] . '">' . $linha["descricao"] . ' ( ' . $linha["data_inicio"] . ' - ' . $linha["data_fim"] . ' )</option>';
-                                                    };
-                                                ?>
+                                            <select class = "form-control" id = "campanha" required onchange = "cadastrar_campanha(this.value)">
+                                                
                                             </select>
                                         </label>
                                     </div>
                                     
                                     <div class = "form-group col-md-2">
                                         <label class = "invisible">A</label>
-                                        <input id = "salvar" class = "btn btn-success btn-block btn-md" type = "submit" value = "Cadastrar" />  
+                                        <input id = "salvar" class = "btn btn-primary btn-block btn-md" type = "submit" value = "Cadastrar" />  
                                     </div>
 
                                     <div id = "msn" class = "form-group col-md-12"></div>
@@ -212,29 +209,37 @@
 
                     <div class = "modal fade" id = "nova_campanha" tabindex = "-1" role = "dialog" aria-labelledby = "label" aria-hidden = "true">
                         <div class = "modal-dialog" role = "document">
-                            <div class = "modal-content">
-                                <div class = "modal-header">
-                                    <h5 class = "modal-title" id = "label">Nova mensagem</h5>
+                            <div class = "modal-content bg-dark text-light">
+                                <div class = "modal-header border-primary">
+                                    <h5 class = "modal-title text-primary" id = "label">Nova Campanha Solidária</h5>
                                     <button type = "button" class = "close" data-dismiss = "modal" aria-label = "Fechar">
-                                        <span aria-hidden = "true">&times;</span>
+                                        <span aria-hidden = "true" class = "text-primary">&times;</span>
                                     </button>
                                 </div>
                                 
                                 <div class = "modal-body">
                                     <form>
-                                        <div class="form-group">
-                                            <label for="recipient-name" class="col-form-label">Destinatário:</label>
-                                            <input type="text" class="form-control" id="recipient-name">
+                                        <div class = "form-group">
+                                            <label for = "desc1" class = "col-form-label">Descrição</label>
+                                            <input type = "text" class = "form-control" id = "desc1" placeholder = "Ex.: Campanha de Inverno" style = "text-transform: uppercase" />
                                         </div>
-                                        <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Mensagem:</label>
-                                            <textarea class="form-control" id="message-text"></textarea>
+
+                                        <div class = "form-group">
+                                            <label for = "data_ini" class = "col-form-label">Data de Início</label>
+                                            <input type = "date" class = "form-control" id = "data_ini" />
+                                        </div>
+
+                                        <div class = "form-group">
+                                            <label for = "data_ter" class = "col-form-label">Data de Termino</label>
+                                            <input type = "date" class = "form-control" id = "data_ter" />
                                         </div>
                                     </form>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                    <button type="button" class="btn btn-primary">Enviar</button>
+
+                                <div id = "msn1"></div>
+
+                                <div class = "modal-footer border-primary">
+                                    <button type = "button" id = "cad_campanha" class = "btn btn-outline-primary">Cadastrar</button>
                                 </div>
                             </div>
                         </div>

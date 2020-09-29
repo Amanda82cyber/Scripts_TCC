@@ -20,6 +20,7 @@
             while($linha = mysqli_fetch_assoc($r2)){
                 $_SESSION["nome"][] = $linha["nome"];
                 $_SESSION["acesso"][] = "usuario";
+                $_SESSION["identificador"][] = $linha["CPF"];
             }
         }else{
             echo "Senha Incorreta!";
@@ -34,6 +35,7 @@
             while($linha = mysqli_fetch_assoc($r3)){
                 $_SESSION["nome"][] = $linha["nome_fantasia"];
                 $_SESSION["acesso"][] = "loja";
+                $_SESSION["identificador"][] = $linha["CNPJ"];
             }
         }else{
             echo "Senha Incorreta!";
