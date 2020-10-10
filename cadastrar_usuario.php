@@ -4,6 +4,8 @@
 ?>
     
         <script>
+            var vetor_cpf = 0;
+            var vetor_cnpj = 0;
             $(document).ready(function(){
                 $("#cep").focusout(function(){
                     $.ajax({
@@ -21,32 +23,43 @@
 
                 $("#cnpj").focusout(function(){
                     cnpj = $("#cnpj").val();
-                    if(cnpj.length == 14) {
+                    vetor_cnpj = Array.from(cnpj);
+
+                    digit1 = validar_cnpj(5, 4, 9, 12);
+                    digit2 = validar_cnpj(6, 5, 9, 13);
+
+                    if((vetor_cnpj[12] == digit1) && (vetor_cnpj[13] == digit2)){
+                        if(cnpj.length == 14) {
             
-                        // Aqui rodamos o ajax para a url da API concatenando o número do CNPJ na url
-                        $.ajax({
-                            url:'https://www.receitaws.com.br/v1/cnpj/' + cnpj,
-                            method:'GET',
-                            dataType: 'jsonp', // Em requisições AJAX para outro domínio é necessário usar o formato "jsonp" que é o único aceito pelos navegadores por questão de segurança
-                            complete: function(xhr){
-                            
-                                // Aqui recuperamos o json retornado
-                                response = xhr.responseJSON;
+                            // Aqui rodamos o ajax para a url da API concatenando o número do CNPJ na url
+                            $.ajax({
+                                url:'https://www.receitaws.com.br/v1/cnpj/' + cnpj,
+                                method:'GET',
+                                dataType: 'jsonp', // Em requisições AJAX para outro domínio é necessário usar o formato "jsonp" que é o único aceito pelos navegadores por questão de segurança
+                                complete: function(xhr){
                                 
-                                // Na documentação desta API tem esse campo status que retorna "OK" caso a consulta tenha sido efetuada com sucesso
-                                if(response.status == 'OK') {
-                                
-                                    // Agora preenchemos os campos com os valores retornados
-                                    $('#razao_social').val(response.nome);
-                                    $('#nome_fant').val(response.fantasia);
-                                    $("#nome_repre").focus();
-                                
-                                // Aqui exibimos uma mensagem caso tenha ocorrido algum erro
-                                } else {
-                                    alert(response.message); // Neste caso estamos imprimindo a mensagem que a própria API retorna
+                                    // Aqui recuperamos o json retornado
+                                    response = xhr.responseJSON;
+                                    
+                                    // Na documentação desta API tem esse campo status que retorna "OK" caso a consulta tenha sido efetuada com sucesso
+                                    if(response.status == 'OK') {
+                                    
+                                        // Agora preenchemos os campos com os valores retornados
+                                        $('#razao_social').val(response.nome);
+                                        $('#nome_fant').val(response.fantasia);
+                                        $("#nome_repre").focus();
+                                    
+                                    // Aqui exibimos uma mensagem caso tenha ocorrido algum erro
+                                    } else {
+                                        alert(response.message); // Neste caso estamos imprimindo a mensagem que a própria API retorna
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+                    }else{
+                        alert("Digite um CNPJ válido!!!");
+                        $("#cnpj").val("");
+
                     }
                 });
             });
@@ -135,10 +148,20 @@
             function deixar_bonitinho(oq){
                 if((oq == "cpf") || (oq == "cpf_repre")){
                     valor_cpf = $("#" + oq).val();
-                    $("#" + oq).attr("type", "text");
-                    if(valor_cpf.length == 11){
-                        resultado = valor_cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
-                        $("#" + oq).val(resultado);
+                    vetor_cpf = Array.from(valor_cpf);
+                    
+                    dig1 = validar_cpf(10, 9);
+                    dig2 = validar_cpf(11, 10);
+
+                    if((vetor_cpf[9] == dig1) && (vetor_cpf[10] == dig2)){
+                        $("#" + oq).attr("type", "text");
+                        if(valor_cpf.length == 11){
+                            resultado = valor_cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+                            $("#" + oq).val(resultado);
+                        }
+                    }else{
+                        alert("Digite um CPF válido!!!");
+                        $("#" + oq).val("");
                     }
                 }else if(oq == "tel"){
                     valor_tel = $("#tel").val();
@@ -163,6 +186,48 @@
                         $("#cel").val(resultado);
                     }
                 }
+            }
+
+            function validar_cpf(d, qtd){
+                soma = 0;
+                desc_mult = d;
+
+                for(i = 0; i < qtd; i++){
+                    soma += vetor_cpf[i] * desc_mult;
+                    desc_mult--;
+                }
+
+                if((11 - (soma%11)) > 9){
+                    dig = 0;
+                }else{
+                    dig = (11 - (soma%11));
+                }
+
+                return dig;
+            }
+
+            function validar_cnpj(desc_s1, qtd1, desc_s2, qtdf){
+                soma = 0;
+                desc = desc_s1;
+
+                for(i = 0; i < qtd1; i++){
+                    soma += vetor_cnpj[i] * desc;
+                    desc--;
+                }
+
+                desc2 = desc_s2;
+                for(i = qtd1; i < qtdf; i++){
+                    soma += vetor_cnpj[i] * desc2;
+                    desc2--;
+                }
+
+                if((soma%11) < 2){
+                    digi = 0;
+                }else{
+                    digi = (11 - (soma%11));
+                }
+
+                return digi;
             }
         </script>
         
