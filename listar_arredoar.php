@@ -8,7 +8,8 @@
                         tipo as 'tipo_doa', 
                         data_inicio as 'ini_doa', 
                         data_fim as 'fim_doa', 
-                        arre_doar as 'oqe'
+                        arre_doar as 'oqe',
+                        id_doacoes
                     FROM doacoes";
 
     $resultado = mysqli_query($conexao, $consulta);

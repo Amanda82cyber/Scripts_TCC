@@ -30,7 +30,7 @@
                     <div class = "navbar-nav">
                         <a class = "nav-item nav-link active" href = "index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
                         <!-- <a class = "nav-item nav-link" href = "sobre_nos.php"><i class="fa fa-users" aria-hidden="true"></i> Sobre Nós</a> -->
-                        <a class = "nav-item nav-link" href = "lista_locais.php"><i class="fa fa-map" aria-hidden="true"></i> Locais</a>
+                        <a class = "nav-item nav-link" href = "lista_locais.php"><i class="fa fa-map" aria-hidden="true"></i> Mapa</a>
 
                         <?php 
                             session_start();

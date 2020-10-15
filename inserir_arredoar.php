@@ -16,7 +16,7 @@
         $tipo = $q_tipo;
     }
 
-    if($_SESSION["acesso"] == "loja"){
+    if(!($_SESSION["acesso"] == "usuario")){
         $inserir = "INSERT INTO doacoes(descricao, quantidade, tipo, data_inicio, data_fim, arre_doar, id_campanha, cnpj_local) VALUES('$desc', '$quant', '$tipo', '$data_inicio', '$data_fim', '$arre_doar', '$campanha', '$usuario')";
     }else{
         $inserir = "INSERT INTO doacoes(descricao, quantidade, tipo, data_inicio, data_fim, arre_doar, id_campanha, CPF_usuario) VALUES('$desc', '$quant', '$tipo', '$data_inicio', '$data_fim', '$arre_doar', '$campanha', '$usuario')";
