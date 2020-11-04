@@ -1,6 +1,10 @@
-<?php include("menu.php"); ?>
+<?php 
+    include("menu.php"); 
+    echo '$(document).ready(function(){codigo = '. $_SESSION["codigo"] .'});';
+?>
 
         <script>
+            cont = 0;
             $(document).ready(function(){
 
                 $("#btn_senha").click(function(){
@@ -18,6 +22,60 @@
                         $("#msn").html("Escolha uma das opções!!").css("color", "red");
                     }else{
                         window.location.href = "cadastrar_usuario.php?fis_jur=" + $("input[name = 'fis_jur']:checked").val();
+                    }
+                });
+
+                $("input[name = 'oqs']").change(function(){
+                    if($("input[name = 'oqs']:checked").val() == "Física"){
+                        campo = '<div class = "form-group"><label for = "ident_alt" class = "col-form-label">CPF <small> (Com Pontuação)</small></label><input type = "text" class = "form-control" id = "ident_alt" /></div>';
+                    }else{
+                        campo = '<div class = "form-group"><label for = "ident_alt" class = "col-form-label">CNPJ <small> (Apenas Números)</small></label><input type = "number" class = "form-control" id = "ident_alt" /></div>';
+                    }
+                    campo += '<div class = "form-group"><label for = "email_alt" class = "col-form-label">E-mail</label><input type = "email" class = "form-control" id = "email_alt" /></div>';
+                    $("#continuacao").html(campo);
+                });
+
+                $("#OK").click(function(){
+                    nome = $("button[id = 'OK']").attr("name");
+                    if(nome == "OK"){
+                        if($("input[name = 'oqs']:checked").length <= 0){
+                            $("#msn2").html("Selecione uma das opções!").css("color", "red");
+                        }else{
+                            if(($("#email_alt").val() == "") && ($("#ident_alt").val() == "")){
+                                $("#msn2").html("Os campos acima são obrigatórios!").css("color", "red");
+                            }else{
+                                $.ajax({
+                                    url: "consultar_usu_alt.php",
+                                    type: "post",
+                                    data: {email: $("#email_alt").val(), identificador: $("#ident_alt").val(), oqe: $("input[name = 'oqs']:checked").val()},
+                                    success: function(data){
+                                        if(data == 1){
+                                            $("#msn2").html("Digite no campo 'Código' a sequência de números que recebeu em seu e-mail!");
+                                            $("#continuacao").html('<div class = "form-group"><label for = "cod" class = "col-form-label">Código</label><input type = "number" class = "form-control" id = "cod" /></div>');
+                                            $("button[id = 'OK']").attr("name", "Confirmar");
+                                            $("button[id = 'OK']").html("Confirmar");
+                                        }else{
+                                            $("#msn2").html(data).css("color", "red");
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }else if(nome == "Confirmar"){
+                        if($("#cod").val() == codigo){
+                            $("#msn2").html("Você é você mesmo! Digite sua nova senha e a confirme nos campos acima!");
+                            $("#continuacao").html('<div class = "form-group"><label for = "senha_alt" class = "col-form-label">Nova Senha</label><input type = "number" class = "form-control" id = "senha_alt" /><label for = "confirme_senha_alt" class = "col-form-label">Confirmar Senha</label><input type = "number" class = "form-control" id = "confirme_senha_alt" /></div>');
+                            $(this).prop("name", "Alterar").html("Alterar");
+                        }else{
+                            cont++;
+                            if(cont < 4){
+                                $("#msn2").html("Verifique se digitou o código corretamente!");
+                            }else{
+                                $("button[data-target = '#troquesenha']").click();
+                            }
+                        }
+                    }else{
+
                     }
                 });
             });
@@ -135,6 +193,38 @@
 
                     <div class = "modal-footer border-primary">
                         <button type = "button" id = "prosseguir" class = "btn btn-outline-primary">Prosseguir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = "modal fade" id = "troqueSenha" tabindex = "-1" role = "dialog" aria-labelledby = "tit_troc_sen" aria-hidden = "true">
+            <div class = "modal-dialog" role = "document">
+                <div class = "modal-content bg-dark text-light">
+                    <div class = "modal-header border-primary">
+                        <h5 class = "modal-title text-primary" id = "tit_troc_sen">Alterar Senha</h5>
+                        <button type = "button" class = "close" data-dismiss = "modal" aria-label = "Fechar">
+                            <span aria-hidden = "true" class = "text-primary">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class = "modal-body">
+                        <form id = "form_alt">
+                            <div class = "form-group">
+                                <label for = "oqs" class = "col-form-label">Sou uma pessoa...</label>
+                                <input type = "radio" name = "oqs" id = "fis_alt" value = "Física" />
+                                <label for = "fis_alt">FÍSICA</label>
+                                <input type = "radio" name = "oqs" id = "jur_alt" value = "Jurídica" />
+                                <label for = "jur_alt">JURÍDICA</label>
+                            </div>
+
+                            <div id = "continuacao"></div>
+                        </form>
+                        <div id = "msn2"></div>
+                    </div>
+
+                    <div class = "modal-footer border-primary">
+                        <button type = "button" name = "OK" class = "btn btn-primary" id = "OK">OK</button>
                     </div>
                 </div>
             </div>

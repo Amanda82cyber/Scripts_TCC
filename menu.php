@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 
 <html lang = "pt-BR">
@@ -33,7 +34,6 @@
                         <a class = "nav-item nav-link" href = "lista_locais.php"><i class="fa fa-map" aria-hidden="true"></i> Mapa</a>
 
                         <?php 
-                            session_start();
                             if(isset($_SESSION["nome"])){
                         ?>
                         <li class = "nav-item dropdown">

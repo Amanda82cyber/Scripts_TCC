@@ -14,7 +14,7 @@
                     type: "get",
                     success: function(matriz){
                         for(i=0; i<matriz["arredoar"].length; i++){
-                            list = '<div class = "col-md-3 col-sm-12 col-xs-12">';
+                            list = '<div class = "col-md-3 col-sm-6 col-xs-12">';
                             list += '<div class = "card bg-dark text-light" style = "width: 18rem;">';
                             // list += '<img class = "card-img-top" src = ".../100px180/" alt = "Imagem de capa do card">';
                             list += '<div class = "card-body">';
@@ -22,7 +22,7 @@
                             list += '<p class = "card-text">';
                             list += '<p><span class = "text-primary">Descrição:</span> ' + matriz["arredoar"][i].desc_doa + '</p>';
                             list += '<p><span class = "text-primary">Tipo:</span> ' + matriz["arredoar"][i].tipo_doa + '</p>';
-                            list += '<p><span class = "text-primary">Quantidade:</span> ' + matriz["arredoar"][i].qtd_doa + '</p>';
+                            list += '<p><span class = "text-primary">Quantidade:</span> ' + matriz["arredoar"][i].qtd_doa + ' UNIDADES</p>';
                             list += '<p><span class = "text-primary">Data de Inicio:</span> ' + matriz["arredoar"][i].ini_doa + '</p>';
                             list += '<p><span class = "text-primary">Data de Término:</span> ' + matriz["arredoar"][i].fim_doa + '</p>';
                             list += '</p>';
@@ -38,6 +38,7 @@
             }
 
             function modal_ver_mais(id){
+                $("#modal_ver_mais").html("");
                 $.ajax({
                     url: "listar_mais_arredoar.php",
                     type: "post",

@@ -1,4 +1,5 @@
 <?php 
+    session_start();
     include("conexao.php");
 
     $usuario = $_POST["usuario"];
@@ -16,7 +17,6 @@
         
         if(mysqli_num_rows($r2) > 0){
             echo "1";
-            session_start();
             while($linha = mysqli_fetch_assoc($r2)){
                 $_SESSION["nome"][] = $linha["nome"];
                 $_SESSION["acesso"][] = "usuario";
@@ -31,7 +31,6 @@
         
         if(mysqli_num_rows($r3) > 0){
             echo "1";
-            session_start();
             while($linha = mysqli_fetch_assoc($r3)){
                 $_SESSION["nome"][] = $linha["nome_fantasia"];
                 $_SESSION["acesso"][] = "loja";
