@@ -1,5 +1,4 @@
 <?php
-    session_start();
     include("conexao.php");
 
     $email = $_POST["email"];
@@ -17,7 +16,7 @@
     $resultado = mysqli_query($conexao, $consulta) or die("Erro: " .mysqli_error($conexao));
 
     if(mysqli_num_rows($resultado) <= 0){
-        echo "Não existe um usuário com estes dados!";
+        echo ", Não existe um usuário com estes dados!";
     }else{
         while($linha = mysqli_fetch_assoc($resultado)){
             if($oqe = "Física"){
@@ -30,7 +29,6 @@
         $min = 00001;
         $max = 99999;
         $codigo = rand($min, $max);
-        $_SESSION["codigo"][] = $codigo;
 
         $estilo_email = '<html lang = "pt-BR">
                             <head>
@@ -91,9 +89,9 @@
 
         $enviar_email = mail($email, $assunto, $estilo_email, $headers);
         if($enviar_email){
-            echo "1";
+            echo "1, " . $codigo;
         }else{
-            echo " Erro ao enviar e-mail!";
+            echo ", Erro ao enviar e-mail!";
         }
     }
 ?>

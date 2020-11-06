@@ -1,10 +1,13 @@
 <?php 
-    include("menu.php"); 
-    echo '$(document).ready(function(){codigo = '. $_SESSION["codigo"] .'});';
+    include("menu.php");
 ?>
 
         <script>
             cont = 0;
+            codigo = 0;
+            email = "";
+            ident = "";
+            oqe = "";
             $(document).ready(function(){
 
                 $("#btn_senha").click(function(){
@@ -44,18 +47,23 @@
                             if(($("#email_alt").val() == "") && ($("#ident_alt").val() == "")){
                                 $("#msn2").html("Os campos acima são obrigatórios!").css("color", "red");
                             }else{
+                                email = $("#email_alt").val();
+                                ident = $("#ident_alt").val();
+                                oqe = $("input[name = 'oqs']:checked").val();
                                 $.ajax({
                                     url: "consultar_usu_alt.php",
                                     type: "post",
                                     data: {email: $("#email_alt").val(), identificador: $("#ident_alt").val(), oqe: $("input[name = 'oqs']:checked").val()},
                                     success: function(data){
-                                        if(data == 1){
+                                        separar = data.split(", ");
+                                        if(separar[0] == 1){
+                                            codigo = separar[1];
                                             $("#msn2").html("Digite no campo 'Código' a sequência de números que recebeu em seu e-mail!");
                                             $("#continuacao").html('<div class = "form-group"><label for = "cod" class = "col-form-label">Código</label><input type = "number" class = "form-control" id = "cod" /></div>');
                                             $("button[id = 'OK']").attr("name", "Confirmar");
                                             $("button[id = 'OK']").html("Confirmar");
                                         }else{
-                                            $("#msn2").html(data).css("color", "red");
+                                            $("#msn2").html(separar[1]).css("color", "red");
                                         }
                                     }
                                 });
@@ -64,18 +72,34 @@
                     }else if(nome == "Confirmar"){
                         if($("#cod").val() == codigo){
                             $("#msn2").html("Você é você mesmo! Digite sua nova senha e a confirme nos campos acima!");
-                            $("#continuacao").html('<div class = "form-group"><label for = "senha_alt" class = "col-form-label">Nova Senha</label><input type = "number" class = "form-control" id = "senha_alt" /><label for = "confirme_senha_alt" class = "col-form-label">Confirmar Senha</label><input type = "number" class = "form-control" id = "confirme_senha_alt" /></div>');
+                            $("#continuacao").html('<div class = "form-group"><label for = "senha_alt" class = "col-form-label">Nova Senha</label><input type = "password" class = "form-control" id = "senha_alt" /><label for = "confirme_senha_alt" class = "col-form-label">Confirmar Senha</label><input type = "password" class = "form-control" id = "confirme_senha_alt" /></div>');
                             $(this).prop("name", "Alterar").html("Alterar");
                         }else{
                             cont++;
                             if(cont < 4){
                                 $("#msn2").html("Verifique se digitou o código corretamente!");
                             }else{
-                                $("button[data-target = '#troquesenha']").click();
+                                alert("Você tentou inserir mais de 3 vezes o código incorreto! Faça o mesmo processo novamente!");
+                                window.location.href = "login.php";
                             }
                         }
                     }else{
-
+                        if($("#senha_alt").val() == $("#confirme_senha_alt").val()){
+                            $.ajax({
+                                url: "alterar_senha.php",
+                                type: "post",
+                                data: {email, ident, oqe, nova_senha: $("#senha_alt").val()},
+                                success: function(data){
+                                    if(data == 1){
+                                        $("#msn2").html("Senha alterada com sucesso!!").css("color", "green");
+                                    }else{
+                                        $("#msn2").html(data).css("color", "red");
+                                    }
+                                }
+                            });
+                        }else{
+                            $("#msn2").html("Os dois campos acima devem ter valores iguais!!").css("color", "red");
+                        }
                     }
                 });
             });
