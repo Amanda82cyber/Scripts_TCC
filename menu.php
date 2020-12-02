@@ -29,9 +29,9 @@
             <div class = "collapse navbar-collapse" id = "navbarNavAltMarkup">
                 <div class = "container-fluid">
                     <div class = "navbar-nav">
-                        <a class = "nav-item nav-link active" href = "index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
-                        <!-- <a class = "nav-item nav-link" href = "sobre_nos.php"><i class="fa fa-users" aria-hidden="true"></i> Sobre Nós</a> -->
-                        <a class = "nav-item nav-link" href = "lista_locais.php"><i class="fa fa-map" aria-hidden="true"></i> Mapa</a>
+                        <a class = "nav-item nav-link active" href = "index.php"><i class = "fa fa-home" aria-hidden = "true"></i> Home</a>
+                        <a class = "nav-item nav-link" href = "lista_locais.php"><i class = "fa fa-map" aria-hidden = "true"></i> Mapa</a>
+                        <a class = "nav-item nav-link" href = "duvidas_frequentes.php"><i class = "fa fa fa-question" aria-hidden = "true"></i> Dúvidas Frequentes</a>
 
                         <?php 
                             if(isset($_SESSION["nome"])){
@@ -41,7 +41,9 @@
 
                             <div class = "dropdown-menu" aria-labelledby = "doa_arr">
                                 <a class = "dropdown-item" href = "cadastrar_arredoar.php">Cadastrar</a>
-                                <a class = "dropdown-item" href = "meus_cadastros.php">Meus Cadastros</a>
+                                <?php
+                                    echo '<a class = "dropdown-item" href = "index.php?ident='. $_SESSION["identificador"][0] .'">Meus Cadastros</a>';
+                                ?>
                             </div>
                         </li>
                         <?php 
@@ -50,12 +52,6 @@
                     </div>
 
                     <form class = "form-inline float-right">
-                        <div class = "input-group">
-                            <input class = "form-control" type = "search" placeholder = "Doações/Arrecadações..." aria-describedby = "addon" style = "width: 25%"/>
-                            <div class = "input-group-append">
-                                <button class = "btn btn-outline-success" type = "button" id = "addon"><i class = "fa fa-search" aria-hidden = "true"></i></button>
-                            </div>
-                        </div>
                         <?php 
                             if(!(isset($_SESSION["nome"]))){
                         ?>
@@ -69,7 +65,7 @@
                                         <i class = "fa fa-user" aria-hidden = "true"></i> <?php echo $nome[0]?>
                                     </button>
                                     <div class = "dropdown-menu" aria-labelledby = "drop_usu" >
-                                        <a class = "dropdown-item" href = "alterar_dados.php"><i class = "fas fa-pencil-alt" aria-hidden = "true"></i> Editar Perfil</a>
+                                        <a class = "dropdown-item" href = "cadastrar_usuario.php"><i class = "fas fa-pencil-alt" aria-hidden = "true"></i> Editar Perfil</a>
                                         <a class = "dropdown-item" href = "logout.php"><i class = "fas fa-sign-out-alt" aria-hidden = "true"></i> Sair</a>
                                     </div>
                                 </div>

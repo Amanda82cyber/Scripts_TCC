@@ -10,7 +10,12 @@
                         data_fim as 'fim_doa', 
                         arre_doar as 'oqe',
                         id_doacoes
-                    FROM doacoes";
+                    FROM doacoes ";
+
+    if(isset($_GET["ident"])){
+        $ident = $_GET["ident"];
+        $consulta .= "WHERE CPF_usuario = '$ident' OR cnpj_local = '$ident'";
+    }
 
     $resultado = mysqli_query($conexao, $consulta);
 

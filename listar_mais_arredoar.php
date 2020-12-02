@@ -34,7 +34,8 @@
                           INNER JOIN campanha c
                           ON d.id_campanha = c.id_campanha
                           INNER JOIN usuario u
-                          ON d.CPF_usuario = u.CPF";
+                          ON d.CPF_usuario = u.CPF
+                          WHERE d.id_doacoes = $id";
         }else{
             $consulta1 = "SELECT d.descricao as 'desc_doa',
                                  d.quantidade as 'qtd_doa',
@@ -60,7 +61,8 @@
                           INNER JOIN campanha c
                           ON d.id_campanha = c.id_campanha
                           INNER JOIN local l
-                          ON d.cnpj_local = l.CNPJ";
+                          ON d.cnpj_local = l.CNPJ
+                          WHERE d.id_doacoes = $id";
         }
     }
 

@@ -1,6 +1,17 @@
 <?php 
     include("menu.php");
-    echo '<script>var oqe = "' . $_GET["fis_jur"] . '";</script>';
+    if(isset($_GET["fis_jur"])){
+        echo '<script>var oqe = "' . $_GET["fis_jur"] . '";</script>';
+        $oqe = '"' . $_GET["fis_jur"] . '"';
+    }else{
+        if($_SESSION["acesso"][0] == "Loja"){
+            $oqe = "Jurídica";
+        }else{
+            $oqe = "Física";
+        }
+
+        echo '<script>var oqe = "' . $oqe . '"; $(document).ready(function(){alterar("' . $_SESSION["identificador"][0] . '")});</script>';
+    }    
 ?>
     
         <script>
@@ -98,6 +109,8 @@
                                                 $("#senha").val("");
                                                 $("#confirmar_senha").val("");
                                                 $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
+                                            }else if(data == 2){
+                                                $("#msn").html("Alteração efetuada com sucesso!").css("color", "green");
                                             }else{
                                                 $("#msn").html("Erro: " + data).css("color", "red");
                                             }
@@ -124,6 +137,8 @@
                                                 $("#email").val("");
                                                 $("#confirmar_senha").val("");
                                                 $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
+                                            }else if(data == 2){
+                                                $("#msn").html("Alteração efetuada com sucesso!").css("color", "green");
                                             }else{
                                                 $("#msn").html("Erro: " + data).css("color", "red");
                                             }
@@ -229,20 +244,58 @@
 
                 return digi;
             }
+
+            function alterar(ident){
+                $.ajax({
+                    url: "carregar_perfil.php",
+                    type: "post",
+                    data: {ident, oqe},
+                    success: function(matriz){
+                        for(i=0; i<matriz["perfil"].length; i++){
+                            if(oqe == "Física"){
+                                $("#cpf").attr("type", "text");
+                                $("#cel").attr("type", "text");
+                                $("#cpf").val(matriz["perfil"][i].CPF);
+                                $("#nome").val(matriz["perfil"][i].nome);
+                                $("#cel").val(matriz["perfil"][i].celular);
+                            }else{
+                                $("#cnpj").val(matriz["perfil"][i].CNPJ);
+                                $("#nome_fant").val(matriz["perfil"][i].nome_fantasia);
+                                $("#razao_social").val(matriz["perfil"][i].razao_social);
+                                $("#cpf_repre").attr("type", "text");
+                                $("#cpf_repre").val(matriz["perfil"][i].cpf_representante);
+                                $("#nome_repre").val(matriz["perfil"][i].nome_representante);
+                            }
+
+                            $("#tel").attr("type", "text");
+                            $("#tel").val(matriz["perfil"][i].telefone);
+                            $("#email").val(matriz["perfil"][i].email);
+                            $("#cep").val(matriz["perfil"][i].CEP);
+                            $("#bairro").val(matriz["perfil"][i].bairro);
+                            $("#cid").val(matriz["perfil"][i].cidade);
+                            $("#estado").val(matriz["perfil"][i].estado);
+                            $("#log").val(matriz["perfil"][i].logradouro);
+                            $("#num").val(matriz["perfil"][i].numero);
+                            $("#senha").val(matriz["perfil"][i].senha);
+                            $("#confirmar_senha").val(matriz["perfil"][i].senha);
+                        }
+                    }
+                });
+            }
         </script>
         
-        <div style = "margin-top:20px;" class = "container-fluid">
+        <div style = "margin-top:20px;" class = "container-fluid mb-2">
             <div class = "row">
                 <div class = "col-md-1 col-sm-12 col-xs-12"></div>
                 
                 <div class = "col-md-10 col-sm-12 col-xs-12">
                     <div class = "card text-light bg-dark">
-                        <div class = "card-header"><h3>Cadastro de Pessoa <script>document.write(oqe)</script></h3></div>
+                        <div class = "card-header"><h3><?php if(!(isset($_SESSION["acesso"]))){ echo "Cadastro de Pessoa <script>document.write(oqe)</script>";}else{ echo "Editar Perfil";} ?></h3></div>
 
                         <div class = "card-body">
                             <form class = "needs-validation" novalidate>
                                 <div class = "form-row">
-                                    <?php if($_GET["fis_jur"] == "Jurídica"){ ?>
+                                    <?php if($oqe == "Jurídica"){ ?>
 
                                     <div class = "form-group col-md-6">
                                         <label class = "form-control-placeholder" for = "cnpj">CNPJ <small>(Apenas Números)</small></label>
@@ -265,14 +318,14 @@
                                     </div>    
 
                                     <div class = "form-group col-md-3">
-                                        <label class = "form-control-placeholder" for = "cpf_repre">CPF Representante <small>(Apenas Números)</small></label>
+                                        <label class = "form-control-placeholder" for = "cpf_repre">CPF Representante <?php if(!(isset($_SESSION["acesso"]))){ echo "<small>(Apenas Números)</small>"; } ?></label>
                                         <input type = "number" step = "1" class = "form-control" id = "cpf_repre" onblur = "deixar_bonitinho(this.id)" required />
                                     </div>
 
                                     <?php }else{ ?>
 
                                     <div class = "form-group col-md-6">
-                                        <label class = "form-control-placeholder" for = "cpf">CPF <small>(Apenas Números)</small></label>
+                                        <label class = "form-control-placeholder" for = "cpf">CPF <?php if(!(isset($_SESSION["acesso"]))){ echo "<small>(Apenas Números)</small>"; } ?></label>
                                         <input type = "number" step = "1" class = "form-control" id = "cpf" onblur = "deixar_bonitinho(this.id)" required />
                                     </div>
 
@@ -282,14 +335,14 @@
                                     </div>
 
                                     <div class = "form-group col-md-3">
-                                        <label class = "form-control-placeholder" for = "cel">Celular <small>(Apenas Números)</small></label>
+                                        <label class = "form-control-placeholder" for = "cel">Celular <?php if(!(isset($_SESSION["acesso"]))){ echo "<small>(Apenas Números)</small>"; } ?></label>
                                         <input type = "number" step = "1" class = "form-control" id = "cel" onblur = "deixar_bonitinho(this.id)" required />
                                     </div>
                                     
                                     <?php } ?>
 
                                     <div class = "form-group col-md-3">
-                                        <label class = "form-control-placeholder" for = "tel">Telefone <small>(Apenas Números)</small></label>
+                                        <label class = "form-control-placeholder" for = "tel">Telefone <?php if(!(isset($_SESSION["acesso"]))){ echo "<small>(Apenas Números)</small>"; } ?></label>
                                         <input type = "number" step = "1" class = "form-control" id = "tel" onblur = "deixar_bonitinho(this.id)" required />
                                     </div>
 
@@ -366,17 +419,32 @@
                                         <label class = "form-control-placeholder" for = "confirmar_senha">Confirmar Senha</label>
                                         <input type = "password" class = "form-control" id = "confirmar_senha" required />
                                     </div>
+                                
+                                    <?php if(!(isset($_SESSION["acesso"]))){ ?>
 
                                     <div id = "msn" class = "form-group col-md-6"></div>
-                                
                                     <div class = "form-group col-md-3">
                                         <label class = "invisible">A</label>
                                         <a class = "btn btn-outline-primary btn-block btn-md" href = "login.php">Voltar ao Login</a>
                                     </div>
 
+                                    <?php }else{ ?>
+                                        <div id = "msn" class = "form-group col-md-9"></div>
+                                    <?php } ?>
+
                                     <div class = "form-group col-md-3">
                                         <label class = "invisible">A</label>
-                                        <input id = "salvar" class = "btn btn-success btn-block btn-md" type = "submit" value = "Cadastrar" />  
+                                        <?php
+                                            $but = '<input id = "salvar" class = "btn btn-primary btn-block btn-md" type = "submit"';
+                                            if(isset($_SESSION["acesso"])){
+                                                $but .= ' value = "Editar" />';
+                                            }else{
+                                                $but .= ' value = "Cadastrar" />';
+                                            }
+
+                                            echo $but;
+                                        ?>
+                                           
                                     </div>
                                 </div>
                             </form> 

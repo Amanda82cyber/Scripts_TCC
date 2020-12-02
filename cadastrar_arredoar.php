@@ -4,8 +4,12 @@
     
         <script>
             var temp = "";
+            var joga = "";
+            var foto = "";
             $(document).ready(function(){
                 $("#q_tipo").attr("disabled", true);
+                $("#div_campanha").addClass("col-md-4");
+                $("#div_senha").addClass("col-md-2");
                 select_campanha();
 
                 $("#cad_campanha").click(function(){
@@ -27,23 +31,44 @@
                         $("#msn1").html("*Preencha todos os campos!").css("color", "red");
                     }
                 });
+
+                $("#arredoar").change(function(){
+                    if($("#arredoar").val() == "DOAÇÃO"){
+                        $("#div_campanha").addClass("col-md-6");
+                        $("#div_foto").addClass("col-md-6");
+
+                        $("#div_foto").html('<div class = "input-group"><div class = "custom-file"><input type = "file" class = "custom-file-input" name = "foto" onchange = "mudar_texto_foto(this.value)" /><label class = "custom-file-label" id = "label_foto" for = "foto">Escolher foto</label></div></div>');
+                        $("#div_senha").html('<input id = "salvar" class = "btn btn-primary btn-block btn-md" type = "submit" value = "Cadastrar" />');
+                    }else{
+                        $("#div_campanha").addClass("col-md-4").removeClass("col-md-6");
+                        $("#div_senha").html('<label class = "invisible">A</label><input id = "salvar" class = "btn btn-primary btn-block btn-md" type = "submit" value = "Cadastrar" />');
+                        $("#div_foto").html("").removeClass("col-md-6");
+                    }
+                });
             });
 
             (function() {
                 'use strict';
                 window.addEventListener('load', function() {
-
                     // Fetch all the forms we want to apply custom Bootstrap validation styles to
                     var forms = document.getElementsByClassName('needs-validation');
                     // Loop over them and prevent submission
                     var validation = Array.prototype.filter.call(forms, function(form) {
                         form.addEventListener('submit', function(event) {
+                        var form = $("#f")[0]; //recebe o formulário inteiro
+                        var formData = new FormData(form);
+                        formData.append("arredoar", $("#arredoar").val());
+                        console.log(formData);
+
                         if (form.checkValidity()){
                             if(!($("#arredoar").val() == null)){
                                 $.ajax({
                                     url: "inserir_arredoar.php",
                                     type: "post",
-                                    data: {arre_doar: $("#arredoar").val(), desc: $("#desc").val(), quant: $("#quant").val(), tipo: $("#tipo").val(), q_tipo: $("#q_tipo").val(), data_inicio: $("#data_inicio").val(), data_fim: $("#data_fim").val(), campanha: $("#campanha").val()},
+                                    enctype: "multipart/form-data",
+                                    data: formData,
+                                    processData: false,  
+		                            contentType: false,
                                     success: function(data){
                                         if(data == 1){
                                             $("#arredoar").val("");
@@ -54,6 +79,7 @@
                                             $("#data_inicio").val("");
                                             $("#data_fim").val("");
                                             $("#campanha").val("");
+                                            if($("#arredoar").val() == "DOAÇÃO"){ $("#foto").val(""); };
                                             $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
                                         }else{
                                             $("#msn").html("Erro: " + data).css("color", "red");
@@ -63,7 +89,7 @@
                             }else{
                                 $("#msn").html("O cadastro é de que? Doação ou arrecadação? Selecione uma opção!").css("color", "red");
                             }
-                        } else {
+                        }else{
                             $("#msn").html("*Preencha os campos obrigatórios!").css("color", "red");
                         }    
 
@@ -74,6 +100,10 @@
                     });
                 }, false);
             })();
+
+            function mudar_texto_foto(valor){
+                $("#label_foto").html(valor);
+            }
 
             function qual(op){
                 v = '#'+op;
@@ -101,7 +131,11 @@
                     success: function(matriz){
                         option = '<option value = "" selected disabled>ESCOLHA UMA OPÇÃO</option>';
                         for(i=0; i<matriz["campanhas"].length; i++){
-                            option += '<option value = "' + matriz["campanhas"][i].id_campanha + '">' + matriz["campanhas"][i].descricao + ' (' + matriz["campanhas"][i].data_inicio + ' - ' + matriz["campanhas"][i].data_fim + ') </option>';
+                            if(matriz["campanhas"][i].id_campanha == 1){
+                                option += '<option value = "' + matriz["campanhas"][i].id_campanha + '">' + matriz["campanhas"][i].descricao + '</option>';
+                            }else{
+                                option += '<option value = "' + matriz["campanhas"][i].id_campanha + '">' + matriz["campanhas"][i].descricao + ' (' + matriz["campanhas"][i].data_inicio + ' à ' + matriz["campanhas"][i].data_fim + ') </option>';
+                            }
                         }
                         $("#campanha").html(option);
                     }
@@ -127,7 +161,7 @@
             <div class = "row">
                 <div class = "col-md-1 col-sm-12 col-xs-12"></div>
                 
-                <div class = "col-md-10 col-xs-12 col-xs-12">
+                <div class = "col-md-10 col-sm-12 col-xs-12">
                     <div class = "card text-light bg-dark">
                         <div class = "card-header">
                             <form>
@@ -145,21 +179,21 @@
                         </div>
 
                         <div class = "card-body">
-                            <form class = "needs-validation" novalidate>
+                            <form class = "needs-validation" novalidate id = "f" enctype = "multipart/form-data">
                                 <div class = "form-row">
                                     <div class = "form-group col-md-12">
                                         <label class = "form-control-placeholder" for = "desc">Descrição</label>
-                                        <input type = "text" class = "form-control" id = "desc" style = "text-transform: uppercase" required />
+                                        <input type = "text" class = "form-control" id = "desc" name = "desc" style = "text-transform: uppercase" required />
                                     </div>
 
                                     <div class = "form-group col-md-3">
                                         <label class = "form-control-placeholder" for = "quant">Quantidade</label>
-                                        <input type = "number" step = "1" min = "1" class = "form-control" id = "quant" required />
+                                        <input type = "number" step = "1" min = "1" class = "form-control" id = "quant" name = "quant" required />
                                     </div>
 
                                     <div class = "form-group col-md-3">
                                         <label class = "form-control-placeholder" for = "tipo">Tipo</label>
-                                            <select class = "form-control" id = "tipo" required onchange = "qual(this.id)">
+                                            <select class = "form-control" name = "tipo" required onchange = "qual(this.id)">
                                                 <option value = "" selected disabled>ESCOLHA UMA OPÇÃO</option>
                                                 <option value = "VESTIMENTAS">VESTIMENTAS</option>
                                                 <option value = "SAPATOS">SAPATOS</option>
@@ -174,33 +208,36 @@
 
                                     <div class = "form-group col-md-6">
                                         <label class = "form-control-placeholder" for = "q_tipo">Qual?</label>
-                                        <input type = "text" class = "form-control" style = "text-transform: uppercase" id = "q_tipo" />
+                                        <input type = "text" class = "form-control" name = "q_tipo" style = "text-transform: uppercase" id = "q_tipo" />
                                     </div>
 
                                     <div class = "form-group col-md-3">
                                         <label class = "form-control-placeholder" for = "data_inicio">Data de Início</label>
-                                        <input type = "date" class = "form-control" id = "data_inicio" required />
+                                        <input type = "date" class = "form-control" id = "data_inicio" name = "data_inicio" required />
                                     </div>
 
                                     <div class = "form-group col-md-3">
                                         <label class = "form-control-placeholder" for = "data_fim">Data de Término</label>
-                                        <input type = "date" class = "form-control" id = "data_fim" required />
+                                        <input type = "date" class = "form-control" id = "data_fim" name = "data_fim" required />
                                     </div>
 
-                                    <div class = "form-group col-md-4">
+                                    <div class = "form-group" id = "div_campanha">
                                         <label class = "form-control-placeholder" for = "campanha">Campanha</label>
-                                            <select class = "form-control" id = "campanha" required onchange = "cadastrar_campanha(this.value)">
+                                            <select class = "form-control" id = "campanha" name = "campanha" required onchange = "cadastrar_campanha(this.value)">
                                                 
                                             </select>
                                         </label>
                                     </div>
+
+                                    <div class = "form-group" id = "div_foto"></div>
                                     
-                                    <div class = "form-group col-md-2">
+                                    <div class = "form-group" id = "div_senha">
                                         <label class = "invisible">A</label>
                                         <input id = "salvar" class = "btn btn-primary btn-block btn-md" type = "submit" value = "Cadastrar" />  
                                     </div>
 
-                                    <div id = "msn" class = "form-group col-md-12"></div>
+                                    <div class = "form-group col-md-12" id = "msn"></div>
+                                    
                                 </div>
                             </form> 
                         </div>
