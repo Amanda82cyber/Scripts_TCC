@@ -1,11 +1,14 @@
 <?php 
     include("menu.php");
+
+    if(isset($_GET["id"])){
+        echo '<script>$(document).ready(function(){alterar(' . $_GET["id"]. ')});</script>';
+    }
 ?>
     
         <script>
             var temp = "";
-            var joga = "";
-            var foto = "";
+            var id = 0;
             $(document).ready(function(){
                 $("#q_tipo").attr("disabled", true);
                 $("#div_campanha").addClass("col-md-4");
@@ -58,6 +61,7 @@
                         var form = $("#f")[0]; //recebe o formulário inteiro
                         var formData = new FormData(form);
                         formData.append("arredoar", $("#arredoar").val());
+                        formData.append("id", id);
                         console.log(formData);
 
                         if (form.checkValidity()){
@@ -81,6 +85,7 @@
                                             $("#campanha").val("");
                                             if($("#arredoar").val() == "DOAÇÃO"){ $("#foto").val(""); };
                                             $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
+                                            $("#salvar").val("Cadastrar");
                                         }else{
                                             $("#msn").html("Erro: " + data).css("color", "red");
                                         }
@@ -155,6 +160,38 @@
                     $("#campanha").html(temp);
                 }
             }
+
+            function alterar(ident){
+                id = ident;
+                $.ajax({
+                    url: "carregar_arredoar.php",
+                    type: "post",
+                    data: {ident},
+                    success: function(matriz){
+                        for(i=0; i<matriz["arredoar"].length; i++){
+                            $("#tel").attr("type", "text");
+                            $("#arredoar").val(matriz["arredoar"][i].arre_doar).change();
+                            $("#desc").val(matriz["arredoar"][i].descricao);
+                            $("#quant").val(matriz["arredoar"][i].quantidade);
+                            if($("#tipo option[value = '" + matriz["arredoar"][i].tipo + "']").length > 0){
+                                $("#tipo").val(matriz["arredoar"][i].tipo);
+                            }else{
+                                $("#tipo").val("OUTRO");
+                                $("#q_tipo").attr("disabled", false);
+                                $("#q_tipo").val(matriz["arredoar"][i].tipo);
+                            }
+                            
+                            $("#data_inicio").val(matriz["arredoar"][i].data_inicio);
+                            $("#data_fim").val(matriz["arredoar"][i].data_fim);
+                            $("#campanha").val(matriz["arredoar"][i].id_campanha).change();
+
+                            img = "<div class = 'w-75 border bg-white rounded'><img src = 'fotos/"+ matriz["arredoar"][i].foto_doacao + "' class = 'w-25' /></div>";							
+							$("#label_foto").html(img);
+                        }
+                        $("#salvar").val("Alterar");
+                    }
+                });
+            }
         </script>
         
         <div style = "margin-top:20px;" class = "container-fluid">
@@ -193,7 +230,7 @@
 
                                     <div class = "form-group col-md-3">
                                         <label class = "form-control-placeholder" for = "tipo">Tipo</label>
-                                            <select class = "form-control" name = "tipo" required onchange = "qual(this.id)">
+                                            <select class = "form-control" id = "tipo" name = "tipo" required onchange = "qual(this.id)">
                                                 <option value = "" selected disabled>ESCOLHA UMA OPÇÃO</option>
                                                 <option value = "VESTIMENTAS">VESTIMENTAS</option>
                                                 <option value = "SAPATOS">SAPATOS</option>

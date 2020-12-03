@@ -5,6 +5,7 @@
     $arre_doar = strtoupper($_POST["arredoar"]);
     $desc = strtoupper($_POST["desc"]);
     $tipo = strtoupper($_POST["tipo"]);
+    $id = $_POST["id"];
 
     if(isset($_POST["q_tipo"])){
         $q_tipo = strtoupper($_POST["q_tipo"]);
@@ -42,24 +43,40 @@
 			// Faz o upload da imagem para seu respectivo caminho
 			move_uploaded_file($foto["tmp_name"], $caminho_imagem);
 	
-			// $alterar_foto = ", foto='$nome_imagem'";
+			$alterar_foto = ", foto='$nome_imagem'";
 		}
-	}
-	// else{
-	// 	$alterar_foto = "";
-	// }
+	}else{
+        $nome_imagem = "";
+        $alterar_foto = "";
+    }
 
     if($tipo == "OUTRO"){
         $tipo = $q_tipo;
     }
 
     if($_SESSION["acesso"] == "loja"){
-        $inserir = "INSERT INTO doacoes(descricao, quantidade, tipo, data_inicio, data_fim, arre_doar, id_campanha, cnpj_local, foto_doacao) VALUES('$desc', '$quant', '$tipo', '$data_inicio', '$data_fim', '$arre_doar', '$campanha', '$usuario', '$nome_imagem')";
+        $var_usu = "cnpj_local";
     }else{
-        $inserir = "INSERT INTO doacoes(descricao, quantidade, tipo, data_inicio, data_fim, arre_doar, id_campanha, CPF_usuario, foto_doacao) VALUES('$desc', '$quant', '$tipo', '$data_inicio', '$data_fim', '$arre_doar', '$campanha', '$usuario', '$nome_imagem')";
+        $var_usu = "CPF_usuario";
     }
 
-    mysqli_query($conexao, $inserir) or die(mysqli_error($conexao));
+    if($id == 0){
+        $consulta = "INSERT INTO doacoes(descricao, quantidade, tipo, data_inicio, data_fim, arre_doar, id_campanha, $var_usu, foto_doacao) VALUES('$desc', '$quant', '$tipo', '$data_inicio', '$data_fim', '$arre_doar', '$campanha', '$usuario', '$nome_imagem')";
+    }else{
+        $consulta = "UPDATE doacoes SET
+                        descricao = '$desc',
+                        quantidade = '$quant',
+                        tipo = '$tipo',
+                        data_inicio = '$data_inicio',
+                        data_fim = '$data_fim',
+                        arre_doar = '$arre_doar',
+                        id_campanha = '$campanha',
+                        $var_usu = '$usuario'
+                        $alterar_foto
+                    WHERE id_doacoes = $id";
+    }
+
+    mysqli_query($conexao, $consulta) or die(mysqli_error($conexao));
 
     echo "1";
 ?>

@@ -2,9 +2,9 @@
     include("menu.php"); 
     if(isset($_GET["ident"])){
         $ident = $_GET["ident"];
-        echo "<script>$(document).ready(function(){listar_arredoar('$ident')})</script>";
+        echo "<script>var usu = 1; $(document).ready(function(){listar_arredoar('$ident')})</script>";
     }else{
-        echo "<script>$(document).ready(function(){listar_arredoar()})</script>";
+        echo "<script>var usu = 2; $(document).ready(function(){listar_arredoar()})</script>";
     }
 ?>
         <script>
@@ -26,7 +26,10 @@
                                 cor = "success";
                             }
                             list = '<div class = "card bg-dark text-light pb-2">';
-                            // list += '<img class = "card-img-top" src = ".../100px180/" alt = "Imagem de capa do card">';
+                            if(matriz["arredoar"][i].foto){
+                                list += '<img class = "card-img-top" src = "fotos/' + matriz["arredoar"][i].foto + '" />';
+                            }
+                            
                             list += '<div class = "card-body">';
                             list += '<h5 class = "card-title text-left text-' + cor + '">' + matriz["arredoar"][i].oqe + '</h5>';
                             list += '<p class = "card-text">';
@@ -36,6 +39,9 @@
                             list += '<p><span class = "text-' + cor + '">Data de Inicio:</span> ' + matriz["arredoar"][i].ini_doa + '</p>';
                             list += '<p><span class = "text-' + cor + '">Data de Término:</span> ' + matriz["arredoar"][i].fim_doa + '</p>';
                             list += '</p>';
+                            if(usu == 1){
+                                list += '<a class = "btn btn-outline-' + cor + ' float-left mr-2" data-toggle = "tooltip" data-placement = "bottom" title = "Editar" href = "cadastrar_arredoar.php?id=' + matriz["arredoar"][i].id_doacoes + '"><i class = "fa fa-wrench" aria-hidden = "true"></i></a>';
+                            }
                             list += '<a class = "btn btn-outline-' + cor + ' float-left mr-2" data-toggle = "tooltip" data-placement = "bottom" title = "Compartilhar"><i class = "fa fa-share-alt" aria-hidden = "true"></i></a>';
                             list += '<a class = "btn btn-' + cor + ' float-left" onclick = "modal_ver_mais(' + matriz["arredoar"][i].id_doacoes + ')">Ver mais</a>';                            
                             list += '</div></div>';

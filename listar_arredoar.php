@@ -9,6 +9,7 @@
                         data_inicio as 'ini_doa', 
                         data_fim as 'fim_doa', 
                         arre_doar as 'oqe',
+                        foto_doacao as 'foto',
                         id_doacoes
                     FROM doacoes ";
 
