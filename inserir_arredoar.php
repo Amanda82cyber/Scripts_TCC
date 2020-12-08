@@ -17,8 +17,10 @@
     $data_fim = $_POST["data_fim"];
     $usuario = $_SESSION["identificador"][0];
 
-    $foto = $_FILES['foto']; // esta variável contém a imagem
-	
+    if(isset($_FILES['foto'])){
+        $foto = $_FILES['foto']; // esta variável contém a imagem
+    }
+    
 	if (!empty($foto["name"])) {
  
 		$error = array();

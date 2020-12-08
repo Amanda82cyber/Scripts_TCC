@@ -2,7 +2,9 @@
     include("menu.php");
 
     if(isset($_GET["id"])){
-        echo '<script>$(document).ready(function(){alterar(' . $_GET["id"]. ')});</script>';
+        echo '<script>$(document).ready(function(){select_campanha(1); alterar(' . $_GET["id"]. ');});</script>';
+    }else{
+        echo '<script>$(document).ready(function(){select_campanha(0)});</script>';
     }
 ?>
     
@@ -13,7 +15,6 @@
                 $("#q_tipo").attr("disabled", true);
                 $("#div_campanha").addClass("col-md-4");
                 $("#div_senha").addClass("col-md-2");
-                select_campanha();
 
                 $("#cad_campanha").click(function(){
                     if(!(($("#desc1").val() == "") && ($("#data_ini").val() == "0000-00-00") && ($("#data_ter").val() == "0000-00-00"))){
@@ -84,7 +85,13 @@
                                             $("#data_fim").val("");
                                             $("#campanha").val("");
                                             if($("#arredoar").val() == "DOAÇÃO"){ $("#foto").val(""); };
-                                            $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
+
+                                            if(id == 0){
+                                                $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
+                                            }else{
+                                                $("#msn").html("Alteração feita com sucesso!").css("color", "green");
+                                            }
+                                            
                                             $("#salvar").val("Cadastrar");
                                         }else{
                                             $("#msn").html("Erro: " + data).css("color", "red");
@@ -128,13 +135,18 @@
                 }
             }
 
-            function select_campanha(){
+            function select_campanha(num){
                 $("#campanha").html("");
                 $.ajax({
                     url: "select_campanha.php",
                     type: "get",
                     success: function(matriz){
-                        option = '<option value = "" selected disabled>ESCOLHA UMA OPÇÃO</option>';
+                        if(num == 1){
+                            option = '<option value = "" disabled>ESCOLHA UMA OPÇÃO</option>';
+                        }else{
+                            option = '<option value = "" selected disabled>ESCOLHA UMA OPÇÃO</option>';
+                        }
+                        
                         for(i=0; i<matriz["campanhas"].length; i++){
                             if(matriz["campanhas"][i].id_campanha == 1){
                                 option += '<option value = "' + matriz["campanhas"][i].id_campanha + '">' + matriz["campanhas"][i].descricao + '</option>';
@@ -183,7 +195,7 @@
                             
                             $("#data_inicio").val(matriz["arredoar"][i].data_inicio);
                             $("#data_fim").val(matriz["arredoar"][i].data_fim);
-                            $("#campanha").val(matriz["arredoar"][i].id_campanha).change();
+                            $('#campanha option[value="' + matriz["arredoar"][i].id_campanha + '"]').attr('selected', 'selected');
 
                             img = "<div class = 'w-75 border bg-white rounded'><img src = 'fotos/"+ matriz["arredoar"][i].foto_doacao + "' class = 'w-25' /></div>";							
 							$("#label_foto").html(img);

@@ -2,7 +2,7 @@
     include("menu.php"); 
     if(isset($_GET["ident"])){
         $ident = $_GET["ident"];
-        echo "<script>var usu = 1; $(document).ready(function(){listar_arredoar('$ident')})</script>";
+        echo "<script>var usu = 1; var ident = '$ident'; $(document).ready(function(){listar_arredoar('$ident')})</script>";
     }else{
         echo "<script>var usu = 2; $(document).ready(function(){listar_arredoar()})</script>";
     }
@@ -41,12 +41,28 @@
                             list += '</p>';
                             if(usu == 1){
                                 list += '<a class = "btn btn-outline-' + cor + ' float-left mr-2" data-toggle = "tooltip" data-placement = "bottom" title = "Editar" href = "cadastrar_arredoar.php?id=' + matriz["arredoar"][i].id_doacoes + '"><i class = "fa fa-wrench" aria-hidden = "true"></i></a>';
+                                list += '<a class = "btn btn-outline-' + cor + ' float-left mr-2" data-toggle = "tooltip" data-placement = "bottom" title = "Apagar" onclick = "apagar(' + matriz["arredoar"][i].id_doacoes + ')"><i class = "fa fa-trash" aria-hidden = "true"></i></a>';
                             }
                             list += '<a class = "btn btn-outline-' + cor + ' float-left mr-2" data-toggle = "tooltip" data-placement = "bottom" title = "Compartilhar"><i class = "fa fa-share-alt" aria-hidden = "true"></i></a>';
                             list += '<a class = "btn btn-' + cor + ' float-left" onclick = "modal_ver_mais(' + matriz["arredoar"][i].id_doacoes + ')">Ver mais</a>';                            
                             list += '</div></div>';
 
                             $("#arredoar").append(list);
+                        }
+                    }
+                });
+            }
+
+            function apagar(id){
+                $.ajax({
+                    url: "apagar_arredoar.php",
+                    type: "post",
+                    data: {id},
+                    success: function(data){
+                        if(data == 1){
+                            listar_arredoar(ident);
+                        }else{
+                            alert(data);
                         }
                     }
                 });
