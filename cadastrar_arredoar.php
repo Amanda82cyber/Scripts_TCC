@@ -63,7 +63,6 @@
                         var formData = new FormData(form);
                         formData.append("arredoar", $("#arredoar").val());
                         formData.append("id", id);
-                        console.log(formData);
 
                         if (form.checkValidity()){
                             if(!($("#arredoar").val() == null)){
@@ -84,7 +83,7 @@
                                             $("#data_inicio").val("");
                                             $("#data_fim").val("");
                                             $("#campanha").val("");
-                                            if($("#arredoar").val() == "DOAÇÃO"){ $("#foto").val(""); };
+                                            if($("#arredoar").val() == "DOAÇÃO"){ $("#foto").val(""); $("#label_foto").html("Escolher foto"); };
 
                                             if(id == 0){
                                                 $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
@@ -114,6 +113,7 @@
             })();
 
             function mudar_texto_foto(valor){
+                alert(valor);
                 $("#label_foto").html(valor);
             }
 
@@ -197,8 +197,10 @@
                             $("#data_fim").val(matriz["arredoar"][i].data_fim);
                             $('#campanha option[value="' + matriz["arredoar"][i].id_campanha + '"]').attr('selected', 'selected');
 
-                            img = "<div class = 'w-75 border bg-white rounded'><img src = 'fotos/"+ matriz["arredoar"][i].foto_doacao + "' class = 'w-25' /></div>";							
-							$("#label_foto").html(img);
+                            // img = "<div class = 'w-75 border bg-white rounded'><img src = 'fotos/"+ matriz["arredoar"][i].foto_doacao + "' class = 'w-25' /></div>";							
+							// $("#label_foto").html(img);
+
+                            $("#label_foto").html(matriz["arredoar"][i].foto_doacao);
                         }
                         $("#salvar").val("Alterar");
                     }
@@ -285,8 +287,7 @@
                                         <input id = "salvar" class = "btn btn-primary btn-block btn-md" type = "submit" value = "Cadastrar" />  
                                     </div>
 
-                                    <div class = "form-group col-md-12" id = "msn"></div>
-                                    
+                                    <div class = "form-group col-md-12" id = "msn"></div>                                    
                                 </div>
                             </form> 
                         </div>

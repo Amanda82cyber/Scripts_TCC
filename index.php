@@ -20,16 +20,22 @@
                     data: {ident},
                     success: function(matriz){
                         for(i=0; i<matriz["arredoar"].length; i++){
+                            list = '<div class = "card bg-dark text-light pb-2">';
+
                             if(matriz["arredoar"][i].oqe == "DOAÇÃO"){
                                 cor = "primary";
+
+                                if(matriz["arredoar"][i].foto){
+                                    list += '<img class = "card-img-top" src = "fotos/' + matriz["arredoar"][i].foto + '" />';
+                                }else{
+                                    fotos_definidas(matriz["arredoar"][i].tipo_doa);
+                                }
                             }else{
                                 cor = "success";
+
+                                fotos_definidas(matriz["arredoar"][i].tipo_doa);
                             }
-                            list = '<div class = "card bg-dark text-light pb-2">';
-                            if(matriz["arredoar"][i].foto){
-                                list += '<img class = "card-img-top" src = "fotos/' + matriz["arredoar"][i].foto + '" />';
-                            }
-                            
+
                             list += '<div class = "card-body">';
                             list += '<h5 class = "card-title text-left text-' + cor + '">' + matriz["arredoar"][i].oqe + '</h5>';
                             list += '<p class = "card-text">';
@@ -51,6 +57,24 @@
                         }
                     }
                 });
+            }
+
+            function fotos_definidas(tipo){
+                if(tipo == "VESTIMENTAS"){
+                    list += '<img class = "card-img-top" src = "fotos_definidas/vestimentas.jpg" />';
+                }else if(tipo == "SAPATOS"){
+                    list += '<img class = "card-img-top" src = "fotos_definidas/sapatos.jpg" />';
+                }else if(tipo == "ALIMENTÍCIA"){
+                    list += '<img class = "card-img-top" src = "fotos_definidas/alimenticia.jpg" />';
+                }else if(tipo == "BRINQUEDOS"){
+                    list += '<img class = "card-img-top" src = "fotos_definidas/brinquedos.jpg" />';
+                }else if(tipo == "MONETÁRIA"){
+                    list += '<img class = "card-img-top" src = "fotos_definidas/monetaria.jpeg" />';
+                }else if(tipo == "LIVROS"){
+                    list += '<img class = "card-img-top" src = "fotos_definidas/livros.jpg" />';
+                }else{
+                    list += '<img class = "card-img-top" src = "fotos_definidas/outro.jpg" />';
+                }
             }
 
             function apagar(id){

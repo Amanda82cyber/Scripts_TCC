@@ -20,11 +20,11 @@
     if(isset($_FILES['foto'])){
         $foto = $_FILES['foto']; // esta variável contém a imagem
     }
-    
+
 	if (!empty($foto["name"])) {
  
 		$error = array();
- 
+    
     	// Verifica se o arquivo é uma imagem
     	if(!preg_match("/^image\/(pjpeg|jpeg|png|gif|bmp)$/", $foto["type"])){
      	   $error[1] = "Isso não é uma imagem.";
@@ -32,7 +32,6 @@
  
 		// Se não houver nenhum erro
 		if (count($error) == 0) {
-		
 			// Pega extensão da imagem
 			preg_match("/\.(gif|bmp|png|jpg|jpeg){1}$/i", $foto["name"], $ext);
  
@@ -42,10 +41,10 @@
         	// Caminho de onde ficará a imagem
         	$caminho_imagem = "fotos/" . $nome_imagem;
  
-			// Faz o upload da imagem para seu respectivo caminho
-			move_uploaded_file($foto["tmp_name"], $caminho_imagem);
+            // Faz o upload da imagem para seu respectivo caminho
+            move_uploaded_file($foto["tmp_name"], $caminho_imagem);
 	
-			$alterar_foto = ", foto='$nome_imagem'";
+			$alterar_foto = ", foto_doacao = '$nome_imagem'";
 		}
 	}else{
         $nome_imagem = "";
