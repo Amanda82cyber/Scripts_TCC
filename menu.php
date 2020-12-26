@@ -3,8 +3,14 @@
 
 <html lang = "pt-BR">
     <head>
-        <meta charset = "utf-8" />
-        <meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta charset = "UTF-8" />
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0" />
+
+        <meta property = "og:site_name" content = "ICSAR" />
+        <meta property = "og:title" content = "Informações sobre Campanhas Solidárias em Araraquara" />
+        <meta property = "og:description" content = "Veja as campanhas solidárias, as doações e as arrecadações que estão ocorrendo neste momento em Araraquara!!!" />
+        <meta property = "og:image" itemprop = "image" content = "logo.png" />
+        <meta property = "og:type" content = "website" />
 
 		<link rel = "stylesheet" href = "node_modules/bootstrap/bootstrap.css" />
         <link rel = "stylesheet" href = "node_modules/bootstrap/style.css" />
@@ -15,12 +21,14 @@
 
         <script defer src = "fontawesome/solid.js"></script>
         <script defer src = "fontawesome/fontawesome.js"></script>
+
+        <script src = "https://unpkg.com/axios/dist/axios.min.js"></script>
     </head>
 
     <body>
         <nav class = "navbar navbar-expand-lg navbar-dark bg-dark">
 
-            <a class = "navbar-brand" href = "#">ICSAR</a>
+            <a class = "navbar-brand" href = "index.php"><img src = "logo.png" width = "30" height = "30" class = "d-inline-block align-top" alt = "" /> ICSAR</a>
 
             <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#navbarNavAltMarkup" aria-controls = "navbarNavAltMarkup" aria-expanded = "false" aria-label = "Alterna navegação">
                 <span class = "navbar-toggler-icon"></span>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Google Map</title>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        // Configurações do mapa
+        var options = {
+          zoom: 14,
+          center: { lat: -21.79444, lng: -48.17556 }, // Latitude e Longitude de Araraquara
+        };
+
+        // Novo mapa
+        var map = new google.maps.Map(document.getElementById('map'), options);
+
+        // Lista de clicks no mapa
+        // google.maps.event.addListener(map, 'click', function (event) {
+        //   addMarker({ coords: event.latLng });
+        // });
+
+        // Adiciona marcador
+        // var marker = new google.maps.Marker({
+        //   position: { lat: -21.8056987, lng: -48.1301056 },
+        //   map: map,
+        //   icon:
+        //     'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+        // });
+
+        // // Informações do marcador
+        // var infoWindow = new google.maps.InfoWindow({
+        //   content: '<h1>Hortências</h1>',
+        // });
+
+        // // Adicionar informações no marcador
+        // marker.addListener('click', function () {
+        //   infoWindow.open(map, marker);
+        // });
+
+        // addMarker({
+        //   coords: { lat: -21.7946, lng: -48.1766 },
+        //   iconImage:
+        //     'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+        // });
+
+        // addMarker({
+        //   coords: { lat: -21.8056987, lng: -48.1301056 },
+        //   content: '<h3>Hortências</h3>',
+        // });
+
+        var markers = [
+          {
+            coords: { lat: -21.8056987, lng: -48.1301056 },
+            // iconImage:
+              // 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+          },
+
+          {
+            coords: { lat: -21.8056987, lng: -48.1301056 },
+            content: '<h3>Hortências</h3>',
+          },
+        ];
+
+        // Loop através dos marcadores
+        for (var i = 0; i < markers.length; i++) {
+          // Adiciona um marcador
+          addMarker(markers[i]);
+        }
+
+        function addMarker(props) {
+          var marker = new google.maps.Marker({
+            position: props.coords,
+            map: map,
+            // icon: props.iconImage,
+          });
+
+          // Verifica se existe icone customizado
+          if (props.iconImage) {
+            // Insere o icone customizado
+            marker.setIcon(props.iconImage);
+          }
+
+          // Verifica se tem conteúdo
+          if (props.content) {
+            // Informações do marcador
+            var infoWindow = new google.maps.InfoWindow({
+              content: props.content,
+            });
+
+            // Adicionar informações no marcador
+            marker.addListener('click', function () {
+              infoWindow.open(map, marker);
+            });
+          }
+        }
+      }
+    </script>
+
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAD4ZWbiJdpCv5_5Fv8FHV8c6YCF_JNca8&callback=initMap"
+    ></script>
+  </body>
+</html>
