@@ -58,7 +58,7 @@
                                         separar = data.split(", ");
                                         if(separar[0] == 1){
                                             codigo = separar[1];
-                                            $("#msn2").html("Digite no campo 'Código' a sequência de números que recebeu em seu e-mail!");
+                                            $("#msn2").html("Digite no campo 'Código' a sequência de números que recebeu em seu e-mail!").css("color", "blue");
                                             $("#continuacao").html('<div class = "form-group"><label for = "cod" class = "col-form-label">Código</label><input type = "number" class = "form-control" id = "cod" /></div>');
                                             $("button[id = 'OK']").attr("name", "Confirmar");
                                             $("button[id = 'OK']").html("Confirmar");
@@ -71,13 +71,13 @@
                         }
                     }else if(nome == "Confirmar"){
                         if($("#cod").val() == codigo){
-                            $("#msn2").html("Você é você mesmo! Digite sua nova senha e a confirme nos campos acima!");
+                            $("#msn2").html("Você é você mesmo! Digite sua nova senha e a confirme nos campos acima!").css("color", "green");
                             $("#continuacao").html('<div class = "form-group"><label for = "senha_alt" class = "col-form-label">Nova Senha</label><input type = "password" class = "form-control" id = "senha_alt" /><label for = "confirme_senha_alt" class = "col-form-label">Confirmar Senha</label><input type = "password" class = "form-control" id = "confirme_senha_alt" /></div>');
                             $(this).prop("name", "Alterar").html("Alterar");
                         }else{
                             cont++;
                             if(cont < 4){
-                                $("#msn2").html("Verifique se digitou o código corretamente!");
+                                $("#msn2").html("Verifique se digitou o código corretamente!").css("color", "red");
                             }else{
                                 alert("Você tentou inserir mais de 3 vezes o código incorreto! Faça o mesmo processo novamente!");
                                 window.location.href = "login.php";

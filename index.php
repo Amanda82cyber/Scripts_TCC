@@ -393,7 +393,7 @@
                     </div>
 
                     <div class = "form-group mx-sm-1">
-                        <input type = "text" size = "50%" id = "filtro_esp" class = "form-control" placeholder = "+ Específico, como 'Casaco de Pele'..." onkeydown = "filtrar()" />
+                        <input type = "text" size = "50%" id = "filtro_esp" class = "form-control" placeholder = "+ Específico, como 'Casaco de Pele'..." onkeydown = "filtrar()" style = "text-transform: uppercase" />
                     </div>
                 </form>
             </div>

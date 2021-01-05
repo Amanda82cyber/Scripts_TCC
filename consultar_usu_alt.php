@@ -44,34 +44,34 @@
                                     }
                         
                                     table{
-                                        border-color: #F4C91B;
+                                        border-color: #204ac8;
                                     }
                         
                                     body {
                                         margin: 0px;
                                         font-family: Verdane;
                                         font-size: 20px;
-                                        color: #000;
+                                        color: #204ac8;
                                     }
                                 </style>
                             </head>
                         
                             <body>
-                                <table width = "100%" border = "1" cellpadding = "1" cellspacing = "1" bgcolor = "#FFF">
+                                <table width = "100%" border = "1" cellpadding = "1" cellspacing = "1" bgcolor = "#CCE5FF">
                                     <tr>
                                         <td rowspan = "3" width = "35%">
-                                            <img src = "https://st2.depositphotos.com/1742172/7374/v/450/depositphotos_73748523-stock-illustration-comic-cartoon-padlock-and-key.jpg" alt = "Imagem de capa do card" />
+                                            <img src = "http://www.icsar.tk/cadeado.png" alt = "Imagem de capa do card" />
                                         </td>
                     
-                                        <th>Alteração de senha requisitada no dia <span style = "color:#F4C91B"> '. $data_envio .' </span> às <span style = "color: #F4C91B"> '. $hora_envio .' </span></th>
+                                        <th>Alteração de senha requisitada no dia <span style = "color: #3662d9"> '. $data_envio .' </span> às <span style = "color: #3662d9"> '. $hora_envio .' </span></th>
                                     </tr>
                     
                                     <tr>
-                                        <th>Olá <span style = "color: #F4C91B;"> '.$nome.' </span> ! Seu código está abaixo.</th>
+                                        <th>Olá <span style = "color: #3662d9;"> '.$nome.' </span> ! Seu código está abaixo.</th>
                                     </tr>
                     
                                     <tr>
-                                        <th style = "background-color: #F4C91B; color: rgb(4, 0, 255); font-size: 30px;"><h3>'.$codigo.'</h3></th>
+                                        <th style = "background-color: #3662d9; background-image: linear-gradient( to right, #204ac8, transparent, #6fffd9); font-size: 30px; color: #fff;"><h3>'.$codigo.'</h3></th>
                                     </tr>
 
                                     <tr>

@@ -4,7 +4,7 @@
         echo '<script>var oqe = "' . $_GET["fis_jur"] . '";</script>';
         $oqe = $_GET["fis_jur"];
     }else{
-        if($_SESSION["acesso"][0] == "Loja"){
+        if($_SESSION["acesso"][0] == "loja"){
             $oqe = "Jurídica";
         }else{
             $oqe = "Física";
