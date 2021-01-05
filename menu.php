@@ -8,9 +8,12 @@
 
         <meta property = "og:site_name" content = "ICSAR" />
         <meta property = "og:title" content = "Informações sobre Campanhas Solidárias em Araraquara" />
-        <meta property = "og:description" id = "desc_post" content = "Veja as campanhas solidárias, as doações e as arrecadações que estão ocorrendo neste momento em Araraquara!!!" />
-        <meta property = "og:image" id = "img_post" itemprop = "image" content = "logo.png" />
         <meta property = "og:type" content = "website" />
+
+        <div id = "desc_comp_head">
+            <meta property = "og:description" id = "desc_post" content = "Veja as campanhas solidárias, as doações e as arrecadações que estão ocorrendo neste momento em Araraquara!!!" />
+            <meta property = "og:image" id = "img_post" itemprop = "image" content = "logo.png" />
+        </div>
 
 		<link rel = "stylesheet" href = "node_modules/bootstrap/bootstrap.css" />
         <link rel = "stylesheet" href = "node_modules/bootstrap/style.css" />

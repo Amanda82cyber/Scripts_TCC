@@ -100,20 +100,19 @@
                 }else if(lugar == "whats"){
                     window.location.href = "https://api.whatsapp.com/send?text=http://www.icsar.tk/index.php?ver_mais=" + id_arredoar;
                 }else{
-                    navigator.clipboard.writeText("http://www.icsar.tk/index.php?ver_mais=" + id_arredoar);
+                    window.location.href = `https://twitter.com/intent/tweet?url=http://www.icsar.tk/index.php?ver_mais=${id_arredoar}`;
+                    // navigator.clipboard.writeText("http://www.icsar.tk/index.php?ver_mais=" + id_arredoar);
                 }
             }
 
             function mudar_componentes(lugar, desc, foto_banco, tipo, id_arredoar){
-                $("meta[property = 'og:description']").removeAttr("content");
-                $("meta[property = 'og:description']").attr("content", desc);
+                $("#desc_comp_head").html("");
+                $("#desc_comp_head").html('<meta property = "og:description" id = "desc_post" content = "' + desc + '" />');
 
                 if(foto_banco == ""){
-                    $("meta[property = 'og:image']").removeAttr("content");
-                    $("meta[property = 'og:image']").attr("content", 'fotos_definidas/' + fotos_definidas(tipo));
+                    $("#desc_comp_head").html('<meta property = "og:image" id = "img_post" itemprop = "image" content = "fotos_definidas/' + fotos_definidas(tipo) + '" />');
                 }else{
-                    $("meta[property = 'og:image']").removeAttr("content");
-                    $("meta[property = 'og:image']").attr("content", 'fotos/' + foto_banco);
+                    $("#desc_comp_head").html('<meta property = "og:image" id = "img_post" itemprop = "image" content = "fotos/' + foto_banco + '" />');
                 }
 
                 compartilhar(lugar, id_arredoar);
@@ -183,7 +182,7 @@
 
                             list += `<a class = "dropdown-item" id = "whats" onclick = "mudar_componentes(this.id, '${matriz["arredoar"][i].desc_doa}', '${matriz["arredoar"][i].foto}', '${matriz["arredoar"][i].tipo_doa}', '${matriz["arredoar"][i].id_doacoes}')"><img src = "whatsapp.png" width = "20px" height = "20px" /> Whatsapp</a>`;
 
-                            list += `<a class = "dropdown-item" id = "copiar_link" onclick = "mudar_componentes(this.id, '${matriz["arredoar"][i].desc_doa}', '${matriz["arredoar"][i].foto}', '${matriz["arredoar"][i].tipo_doa}', '${matriz["arredoar"][i].id_doacoes}')"><img src = "copiar_link.png" width = "20px" height = "20px" />  Copiar Link</a>`;
+                            list += `<a class = "dropdown-item" id = "twitter" onclick = "mudar_componentes(this.id, '${matriz["arredoar"][i].desc_doa}', '${matriz["arredoar"][i].foto}', '${matriz["arredoar"][i].tipo_doa}', '${matriz["arredoar"][i].id_doacoes}')"><img src = "twitter.png" width = "20px" height = "20px" />  Twitter</a>`;
 
                             list += '</div></div>';
                             list += '<a class = "btn btn-' + cor + ' float-left text-light" onclick = "modal_ver_mais(' + matriz["arredoar"][i].id_doacoes + ', ' + "'" + cor + "'" + ')">Ver mais</a>';                            
@@ -241,9 +240,9 @@
                             list = '<div class = "modal fade" id = "ver_mais" tabindex = "-1" role = "dialog" aria-labelledby = "ModalLabel" aria-hidden = "true">';
                             list += '<div class = "modal-dialog modal-lg">';
 
-                            if(cor == "primary"){
+                            if(matriz["mais_arredoar"][i].oqe_doa == "DOAÇÃO"){
                                 list += '<div class = "modal-content cards_doacao">';
-                            }else if(cor == "success"){
+                            }else if(matriz["mais_arredoar"][i].oqe_doa == "ARRECADAÇÃO"){
                                 list += '<div class = "modal-content cards_arrecadacao">';
                             }else{
                                 list += '<div class = "modal-content cards_invalidos">';
