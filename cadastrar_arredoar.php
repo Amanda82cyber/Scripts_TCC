@@ -1,5 +1,6 @@
 <?php 
     include("menu.php");
+    include("verifica_usu_logado.php");
 
     if(isset($_GET["id"])){
         echo '<script>$(document).ready(function(){select_campanha(1); alterar(' . $_GET["id"]. ');});</script>';
@@ -113,7 +114,6 @@
             })();
 
             function mudar_texto_foto(valor){
-                alert(valor);
                 $("#label_foto").html(valor);
             }
 
@@ -213,13 +213,13 @@
                 <div class = "col-md-1 col-sm-12 col-xs-12"></div>
                 
                 <div class = "col-md-10 col-sm-12 col-xs-12">
-                    <div class = "card text-light bg-dark">
-                        <div class = "card-header">
+                    <div class = "card cards_doacao">
+                        <div class = "card-header head_cadastros">
                             <form>
                                 <div class = "form-group row">
                                     <h3>&nbsp Cadastro de</h3>
                                     <div class = "col-md-3">
-                                        <select class = "form-control" id = "arredoar" required onchange = "nova_campanha(this.value)">
+                                        <select class = "custom-select" id = "arredoar" required onchange = "nova_campanha(this.value)">
                                             <option value = "" selected disabled>Escolha...</option>
                                             <option value = "ARRECADAÇÃO">Arrecadação</option>
                                             <option value = "DOAÇÃO">Doação</option>
@@ -244,7 +244,7 @@
 
                                     <div class = "form-group col-md-3">
                                         <label class = "form-control-placeholder" for = "tipo">Tipo</label>
-                                            <select class = "form-control" id = "tipo" name = "tipo" required onchange = "qual(this.id)">
+                                            <select class = "custom-select" id = "tipo" name = "tipo" required onchange = "qual(this.id)">
                                                 <option value = "" selected disabled>ESCOLHA UMA OPÇÃO</option>
                                                 <option value = "VESTIMENTAS">VESTIMENTAS</option>
                                                 <option value = "SAPATOS">SAPATOS</option>
@@ -274,7 +274,7 @@
 
                                     <div class = "form-group" id = "div_campanha">
                                         <label class = "form-control-placeholder" for = "campanha">Campanha</label>
-                                            <select class = "form-control" id = "campanha" name = "campanha" required onchange = "cadastrar_campanha(this.value)">
+                                            <select class = "custom-select" id = "campanha" name = "campanha" required onchange = "cadastrar_campanha(this.value)">
                                                 
                                             </select>
                                         </label>

@@ -8,12 +8,13 @@
 
         <meta property = "og:site_name" content = "ICSAR" />
         <meta property = "og:title" content = "Informações sobre Campanhas Solidárias em Araraquara" />
-        <meta property = "og:description" content = "Veja as campanhas solidárias, as doações e as arrecadações que estão ocorrendo neste momento em Araraquara!!!" />
-        <meta property = "og:image" itemprop = "image" content = "logo.png" />
+        <meta property = "og:description" id = "desc_post" content = "Veja as campanhas solidárias, as doações e as arrecadações que estão ocorrendo neste momento em Araraquara!!!" />
+        <meta property = "og:image" id = "img_post" itemprop = "image" content = "logo.png" />
         <meta property = "og:type" content = "website" />
 
 		<link rel = "stylesheet" href = "node_modules/bootstrap/bootstrap.css" />
         <link rel = "stylesheet" href = "node_modules/bootstrap/style.css" />
+        <link rel = "stylesheet" type = "text/css" href = "estilo.css" />
 
         <script src = "node_modules/jquery/jquery.js"></script>
         <script src = "node_modules/popper/popper.js"></script>
@@ -26,7 +27,7 @@
     </head>
 
     <body>
-        <nav class = "navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class = "navbar navbar-expand-lg navbar-dark" style = "background-color: #3662d9; background-image: linear-gradient( to right, #204ac8, transparent, #6fffd9);">
 
             <a class = "navbar-brand" href = "index.php"><img src = "logo.png" width = "30" height = "30" class = "d-inline-block align-top" alt = "" /> ICSAR</a>
 
@@ -39,7 +40,6 @@
                     <div class = "navbar-nav">
                         <a class = "nav-item nav-link active" href = "index.php"><i class = "fa fa-home" aria-hidden = "true"></i> Home</a>
                         <a class = "nav-item nav-link" href = "lista_locais.php"><i class = "fa fa-map" aria-hidden = "true"></i> Mapa</a>
-                        <a class = "nav-item nav-link" href = "duvidas_frequentes.php"><i class = "fa fa fa-question" aria-hidden = "true"></i> Dúvidas Frequentes</a>
 
                         <?php 
                             if(isset($_SESSION["nome"])){

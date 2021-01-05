@@ -1,7 +1,15 @@
 <?php include("menu.php"); ?>
 
-        <div id = "map" style = "height: 100vh; width: 100%;"></div>
-        <div id = "modal_ver_mais"></div>
+        <div class = "container-fluid mt-2">
+            <div class = "alert alert-primary" role = "alert" style = "text-align: justify; white-space: normal;">
+                <h5>Legenda: </h5> 
+                <img src = "icone_arre.png" /> Arrecadação.
+                <img src = "icone_doa.png" /> Doação.
+                <img src = "icone_arredoar.png" /> Local com mais de uma doação / arrecadação cadastrada.
+            </div>
+            <div id = "map" style = "height: 100vh; width: 100%;"></div>
+            <div id = "modal_ver_mais"></div>
+        </div>
         
         <script>
             function initMap() {
@@ -66,18 +74,19 @@
                             var oqe = matriz["google_arredoar"][i].oqe_doa;
                             var id_doacao = matriz["google_arredoar"][i].id_doacao;
 
-                            conteudo = `<div style = "text-align: justify; white-space: normal;">
-                                        <h6>${oqe} - ${tipo}
-                                        <button type = "button" class = "btn btn-outline-primary btn-sm" onclick = "ver_mais(${id_doacao})"><i class="fa fa-info" aria-hidden="true"></i> Ver Mais</button></h6>
-                                        <p><strong>Descrição:</strong> ${desc}</p>
-                                        <p><strong>Data de Início:</strong> ${data_ini}</p>
-                                        <p><strong>Data de Termino:</strong> ${data_fim}</p>`;
-
                             if(oqe == "ARRECADAÇÃO"){
-                                url = "http://maps.google.com/mapfiles/ms/icons/green-dot.png"; 
+                                url = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
                             }else{
                                 url = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
                             }
+
+                            conteudo = `<div style = "text-align: justify; white-space: normal;">
+                                        <h6>${oqe} - ${tipo}
+                                        <button type = "button" class = "btn btn-outline-dark btn-sm" onclick = "ver_mais(${id_doacao})"><i class="fa fa-info" aria-hidden="true"></i> Ver Mais</button></h6>
+                                        <p><strong>Descrição:</strong> ${desc}</p>
+                                        <p><strong>Data de Início:</strong> ${data_ini}</p>
+                                        <p><strong>Data de Termino:</strong> ${data_fim}</p>
+                                        <hr class = "bg-dark" />`;
 
                             for(c = 0; c < matriz["google_arredoar"].length; c++){
                                 var location1 = matriz["google_arredoar"][c].log + ", " + matriz["google_arredoar"][c].num + " - " + matriz["google_arredoar"][c].cid + "/" + matriz["google_arredoar"][c].estado;
@@ -90,13 +99,12 @@
                                 var id_doacao = matriz["google_arredoar"][c].id_doacao;
 
                                 if((location == location1) && (!(i == c))){
-                                    conteudo += `<hr class = "bg-primary" />
-                                                <h6>${oqe1} - ${tipo1}
-                                                <button type = "button" class = "btn btn-outline-primary btn-sm" onclick = "ver_mais(${id_doacao})"><i class="fa fa-info" aria-hidden="true"></i> Ver Mais</button></h6>
+                                    conteudo += `<h6>${oqe1} - ${tipo1}
+                                                <button type = "button" class = "btn btn-outline-dark btn-sm" onclick = "ver_mais(${id_doacao})"><i class="fa fa-info" aria-hidden="true"></i> Ver Mais</button></h6>
                                                 <p><strong>Descrição:</strong> ${desc1}</p>
                                                 <p><strong>Data de Início:</strong> ${data_ini1}</p>
                                                 <p><strong>Data de Termino:</strong> ${data_fim1}</p>
-                                                <hr class = "bg-primary" />`;
+                                                <hr class = "bg-dark" />`;
                                     url = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
                                 }
 
@@ -106,6 +114,26 @@
                         }
                     }
                 });
+            }
+
+            function fotos_definidas(tipo){
+                if(tipo == "VESTIMENTAS"){
+                    nome_foto = 'vestimentas.jpg';
+                }else if(tipo == "SAPATOS"){
+                    nome_foto = 'sapatos.jpg';
+                }else if(tipo == "ALIMENTÍCIA"){
+                    nome_foto = 'alimenticia.jpg';
+                }else if(tipo == "BRINQUEDOS"){
+                    nome_foto = 'brinquedos.jpg';
+                }else if(tipo == "MONETÁRIA"){
+                    nome_foto = 'monetaria.jpeg';
+                }else if(tipo == "LIVROS"){
+                    nome_foto = 'livros.jpg';
+                }else{
+                    nome_foto = 'outro.jpg';
+                }
+
+                return nome_foto;
             }
 
             function ver_mais(id){
@@ -118,14 +146,16 @@
                         for(i = 0; i<matriz["mais_arredoar"].length; i++){
                             if(matriz["mais_arredoar"][i].oqe_doa == "DOAÇÃO"){
                                 cor = "primary";
+                                classe = "cards_doacao";
                             }else{
                                 cor = "success";
+                                classe = "cards_arrecadacao";
                             }
 
                             list = 
                             `<div class = "modal fade" id = "ver_mais" tabindex = "-1" role = "dialog" aria-labelledby = "ModalLabel" aria-hidden = "true">
                                 <div class = "modal-dialog modal-lg">
-                                    <div class = "modal-content">
+                                    <div class = "modal-content ${classe}">
                                         <div class = "modal-header border-${cor}">
                                             <h4 class = "modal-title text-${cor}" id = "ModalLabel">${matriz["mais_arredoar"][i].oqe_doa} (${matriz["mais_arredoar"][i].ini_doa} à ${matriz["mais_arredoar"][i].fim_doa})</h4>
                                             <button type = "button" class = "close" data-dismiss = "modal" aria-label = "Fechar">
@@ -134,8 +164,18 @@
                                         </div>
 
                                         <div class = "modal-body">
-                                            <ul class = "list-group list-group-flush">
-                                                <li class = "list-group-item bg-transparent border-${cor}">
+                                            <ul class = "list-group list-group-flush">`;
+                                            if(matriz["mais_arredoar"][i].oqe_doa == "DOAÇÃO"){
+                                                if(matriz["mais_arredoar"][i].foto_doa){
+                                                    list += '<li class = "list-group-item bg-transparent border-' + cor + '"><img width = "50%" height = "auto" src = "fotos/' + matriz["mais_arredoar"][i].foto_doa + '" /></li>';
+                                                }else{
+                                                    list += '<li class = "list-group-item bg-transparent border-' + cor + '"><img width = "50%" height = "auto" src = "fotos_definidas/' + fotos_definidas(matriz["mais_arredoar"][i].tipo_doa) + '" /></li>';
+                                                }
+                                            }else{
+                                                list += '<li class = "list-group-item bg-transparent border-' + cor + '"><img width = "50%" height = "auto" src = "fotos_definidas/' + fotos_definidas(matriz["mais_arredoar"][i].tipo_doa) + '" /></li>';
+                                            }
+                            list +=                    
+                                               `<li class = "list-group-item bg-transparent border-${cor}">
                                                     <h5 class = "text-${cor}">Informações Básicas</h5>
                                                     <ul class = "list-group list-group-flush">
                                                         <li class = "list-group-item bg-transparent border-${cor}"><span class = "text-${cor}">Descrição:</span>${matriz["mais_arredoar"][i].desc_doa}</li>

@@ -145,8 +145,8 @@
                 <div class = "col-md-4 col-sm-12 col-xs-12"></div>
 
                 <div class = "col-md-4 col-sm-12 col-xs-12">
-                    <div class = "card text-white bg-dark" style = "-webkit-box-shadow: 0px 4px 20px 5px rgba(0,0,0,0.75);-moz-box-shadow: 0px 4px 20px 5px rgba(0,0,0,0.75); box-shadow: 0px 4px 20px 5px rgba(0,0,0,0.75);">
-                        <div class = "card-header text-center"><h3>Login</h3></div>
+                    <div class = "card cards_doacao" style = "-webkit-box-shadow: 0px 4px 20px 5px rgba(10, 221, 211, 0.75);-moz-box-shadow: 0px 4px 20px 5px rgba(11, 130, 199, 0.75); box-shadow: 0px 4px 20px 5px rgba(91, 134, 255, 0.75);">
+                        <div class = "card-header border-primary text-light head_cadastros" width = "100%"><h3>Login</h3></div>
 
                         <div class = "card-body">
                             <form id = "form_login" class = "needs-validation" novalidate>
@@ -195,11 +195,11 @@
 
         <div class = "modal fade bd-example-modal-sm" tabindex = "-1" role = "dialog" aria-labelledby = "perguntinha" aria-hidden = "true">
             <div class = "modal-dialog modal-sm">
-                <div class = "modal-content bg-dark text-light">
-                    <div class = "modal-header border-primary">
+                <div class = "modal-content cards_doacao">
+                    <div class = "modal-header text-light head_cadastros border-primary">
                         <h5 class = "modal-title" id = "perguntinha">Sou uma pessoa...</h5>
                         <button type = "button" class = "close" data-dismiss = "modal" aria-label = "Fechar">
-                            <span aria-hidden = "true" class = "text-primary">&times;</span>
+                            <span aria-hidden = "true" class = "text-light">&times;</span>
                         </button>
                     </div>
 
@@ -224,11 +224,11 @@
 
         <div class = "modal fade" id = "troqueSenha" tabindex = "-1" role = "dialog" aria-labelledby = "tit_troc_sen" aria-hidden = "true">
             <div class = "modal-dialog" role = "document">
-                <div class = "modal-content bg-dark text-light">
-                    <div class = "modal-header border-primary">
-                        <h5 class = "modal-title text-primary" id = "tit_troc_sen">Alterar Senha</h5>
+                <div class = "modal-content cards_doacao">
+                    <div class = "modal-header head_cadastros border-primary">
+                        <h5 class = "modal-title text-light" id = "tit_troc_sen">Alterar Senha</h5>
                         <button type = "button" class = "close" data-dismiss = "modal" aria-label = "Fechar">
-                            <span aria-hidden = "true" class = "text-primary">&times;</span>
+                            <span aria-hidden = "true" class = "text-light">&times;</span>
                         </button>
                     </div>
 

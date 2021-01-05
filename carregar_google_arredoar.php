@@ -3,6 +3,8 @@
 
     include("conexao.php");
 
+    $data = date("Y-m-d");
+
     $consulta = "SELECT d.descricao as 'desc_doa',
                         d.quantidade as 'qtd_doa',
                         d.tipo as 'tipo_doa',
@@ -28,6 +30,7 @@
                  ON d.id_campanha = c.id_campanha
                  INNER JOIN usuario u
                  ON d.CPF_usuario = u.CPF
+                 WHERE d.data_fim >= '$data'
                  UNION 
                  SELECT d.descricao as 'desc_doa',
                         d.quantidade as 'qtd_doa',
@@ -53,7 +56,8 @@
                  INNER JOIN campanha c
                  ON d.id_campanha = c.id_campanha
                  INNER JOIN local l
-                 ON d.cnpj_local = l.CNPJ";
+                 ON d.cnpj_local = l.CNPJ
+                 WHERE d.data_fim >= '$data'";
 
     $resultado = mysqli_query($conexao, $consulta) or die("Erro: " .mysqli_error($conexao));
 

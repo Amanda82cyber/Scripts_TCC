@@ -1,0 +1,21 @@
+.cards_doacao{
+    background-color: #CCE5FF;
+    color: #134085;
+}
+
+.cards_arrecadacao{
+    background-color: #D4EDDA;
+    color: #567740;
+}
+
+.cards_invalidos{
+    background-color: #F8D7DA;
+    color: #7A2D46;
+}
+
+.head_cadastros{
+    background-color: #3662d9; 
+    background-image: linear-gradient( to top, #204ac8, transparent 30%, #6fffd9);
+    color: #fff;
+}
+

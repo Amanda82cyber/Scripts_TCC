@@ -32,7 +32,7 @@
         if(mysqli_num_rows($r3) > 0){
             echo "1";
             while($linha = mysqli_fetch_assoc($r3)){
-                $_SESSION["nome"][] = $linha["nome_fantasia"];
+                $_SESSION["nome"][] = $linha["razao_social"];
                 $_SESSION["acesso"][] = "loja";
                 $_SESSION["identificador"][] = $linha["CNPJ"];
             }

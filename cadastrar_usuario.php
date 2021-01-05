@@ -2,7 +2,7 @@
     include("menu.php");
     if(isset($_GET["fis_jur"])){
         echo '<script>var oqe = "' . $_GET["fis_jur"] . '";</script>';
-        $oqe = '"' . $_GET["fis_jur"] . '"';
+        $oqe = $_GET["fis_jur"];
     }else{
         if($_SESSION["acesso"][0] == "Loja"){
             $oqe = "Jurídica";
@@ -289,8 +289,8 @@
                 <div class = "col-md-1 col-sm-12 col-xs-12"></div>
                 
                 <div class = "col-md-10 col-sm-12 col-xs-12">
-                    <div class = "card text-light bg-dark">
-                        <div class = "card-header"><h3><?php if(!(isset($_SESSION["acesso"]))){ echo "Cadastro de Pessoa <script>document.write(oqe)</script>";}else{ echo "Editar Perfil";} ?></h3></div>
+                    <div class = "card cards_doacao">
+                        <div class = "card-header head_cadastros"><h3><?php if(!(isset($_SESSION["acesso"]))){ echo "Cadastro de Pessoa <script>document.write(oqe)</script>";}else{ echo "Editar Perfil";} ?></h3></div>
 
                         <div class = "card-body">
                             <form class = "needs-validation" novalidate>
@@ -304,7 +304,7 @@
 
                                     <div class = "form-group col-md-6">
                                         <label class = "form-control-placeholder" for = "nome_fant">Nome Fantasia</label>
-                                        <input type = "text" class = "form-control" style = "text-transform: uppercase" id = "nome_fant" required />
+                                        <input type = "text" class = "form-control" style = "text-transform: uppercase" id = "nome_fant" />
                                     </div>                                  
 
                                     <div class = "form-group col-md-6">
@@ -368,7 +368,7 @@
 
                                     <div class = "form-group col-md-3">
                                         <label class = "form-control-placeholder" for = "estado">Estado</label>
-                                        <select class = "form-control" id = "estado" required>
+                                        <select class = "custom-select" id = "estado" required>
                                             <option value = "" selected disabled>ESCOLHA UMA OPÇÃO</option>
                                             <option value = "AC">ACRE</option>
                                             <option value = "AL">ALAGOAS</option>

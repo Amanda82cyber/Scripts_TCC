@@ -9,7 +9,7 @@
     if($oqe == "Física"){
         $select = "SELECT * FROM usuario WHERE CPF = '$ident'";
     }else{
-        $select = "SELECT * FROM local WHERE CNPJ = $ident";
+        $select = "SELECT * FROM local WHERE CNPJ = '$ident'";
     }
 
     $resultado = mysqli_query($conexao, $select);

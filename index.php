@@ -2,23 +2,60 @@
     include("menu.php"); 
     if(isset($_GET["ident"])){
         $ident = $_GET["ident"];
-        echo "<script>var usu = 1; var ident = '$ident'; $(document).ready(function(){listar_arredoar('$ident')})</script>";
+        echo "<script>var usu = 1; var ident = '$ident'; $(document).ready(function(){listar_arredoar('$ident', 0)})</script>";
     }else{
-        echo "<script>var usu = 2; $(document).ready(function(){listar_arredoar()})</script>";
+        if(isset($_GET["ver_mais"])){
+            $id = $_GET["ver_mais"];
+            echo "<script>var usu = 2; var ident = ''; $(document).ready(function(){listar_arredoar('', 0); modal_ver_mais('$id')})</script>";
+        }else{
+            echo "<script>var usu = 2; var ident = ''; $(document).ready(function(){listar_arredoar('', 0)})</script>";
+        }
     }
 
-    if(isset($_GET["ver_mais"])){
-        $id = $_GET["ver_mais"];
-        echo "<script>$(document).ready(function(){modal_ver_mais('$id')})</script>";
-    }
+    
 ?>
         <!-- Parâmetro sensor é utilizado somente em dispositivos com GPS -->
-        <script src = "https://maps.google.com/maps/api/js?sensor=false&key=AIzaSyAD4ZWbiJdpCv5_5Fv8FHV8c6YCF_JNca8"></script> 
+        <script src = "https://maps.google.com/maps/api/js?sensor=false&key=AIzaSyAD4ZWbiJdpCv5_5Fv8FHV8c6YCF_JNca8"></script>
         
         <script>
+            var filtro1 = "";
+            var filtro2 = "";
+            var filtro3 = "";
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+
             $(document).ready(function(){
                 $('[data-toggle = "tooltip"]').tooltip();
+
+                $("a[name = 'btn_pagina']").click(function(){
+                    p = $(this).html();
+                    p = (p-1)*10;
+                    listar_arredoar(ident, p);
+                });
+
+                $("#filtro_tipo").val("");
+                $("#filtro_val").val("");
+                $("#filtro_esp").val("");
             });   
+            
+            function filtrar(){
+                $.ajax({
+                    url: "paginacao_arredoar.php",
+                    type: "post",
+                    data: {filtro1: $("select[id = 'filtro_tipo']").val(), filtro2: $("select[id = 'filtro_val']").val(), filtro3: $("#filtro_esp").val()},
+                    success: function(d){
+                        $("#paginacao").html(d);
+                        filtro1 = $("select[id = 'filtro_tipo']").val();
+                        filtro2 = $("select[id = 'filtro_val']").val();
+                        filtro3 = $("#filtro_esp").val();
+                        listar_arredoar(ident, 0);
+                    }
+                });
+            }
 
             function calcula_distancia(destino){
                 if($("#pesq").val() == ""){
@@ -57,34 +94,47 @@
                 }
             }
 
-            function compartilhar(lugar, desc, foto_banco, tipo, id_arredoar){
-                $("meta[property = 'og:description']").attr("content", desc);
-
-                if(foto_banco == ""){
-                    $("meta[property = 'og:image']").attr("content", 'fotos_definidas/' + fotos_definidas(tipo));
-                }else{
-                    $("meta[property = 'og:image']").attr("content", 'fotos/' + foto_banco);
-                }
-
+            function compartilhar(lugar, id_arredoar){
                 if(lugar == "face"){
-                    window.location.href = "https://www.facebook.com/sharer/sharer.php?u=icsar.tk/index.php?ver_mais=" + id_arredoar;
+                    window.location.href = "https://www.facebook.com/sharer/sharer.php?u=http://www.icsar.tk/index.php?ver_mais=" + id_arredoar;
+                }else if(lugar == "whats"){
+                    window.location.href = "https://api.whatsapp.com/send?text=http://www.icsar.tk/index.php?ver_mais=" + id_arredoar;
                 }else{
-                    window.location.href = "https://api.whatsapp.com/send?text=u=icsar.tk/index.php?ver_mais=" + id_arredoar;
+                    navigator.clipboard.writeText("http://www.icsar.tk/index.php?ver_mais=" + id_arredoar);
                 }
             }
 
-            function listar_arredoar(ident){
+            function mudar_componentes(lugar, desc, foto_banco, tipo, id_arredoar){
+                $("meta[property = 'og:description']").removeAttr("content");
+                $("meta[property = 'og:description']").attr("content", desc);
+
+                if(foto_banco == ""){
+                    $("meta[property = 'og:image']").removeAttr("content");
+                    $("meta[property = 'og:image']").attr("content", 'fotos_definidas/' + fotos_definidas(tipo));
+                }else{
+                    $("meta[property = 'og:image']").removeAttr("content");
+                    $("meta[property = 'og:image']").attr("content", 'fotos/' + foto_banco);
+                }
+
+                compartilhar(lugar, id_arredoar);
+            }
+
+            function listar_arredoar(ident, p){
                 $("#arredoar").html("");
                 $.ajax({
                     url: "listar_arredoar.php",
-                    type: "get",
-                    data: {ident},
+                    type: "post",
+                    data: {ident, p, filtro1, filtro2, filtro3},
                     success: function(matriz){
                         for(i=0; i<matriz["arredoar"].length; i++){
-                            list = '<div class = "card bg-dark text-light pb-2">';
-
                             if(matriz["arredoar"][i].oqe == "DOAÇÃO"){
-                                cor = "primary";
+                                if(matriz["arredoar"][i].fim_doa <= today){
+                                    cor = "danger";
+                                    list = '<div class = "card cards_invalidos pb-2">';
+                                }else{
+                                    cor = "primary";
+                                    list = '<div class = "card cards_doacao pb-2">';
+                                }
 
                                 if(matriz["arredoar"][i].foto){
                                     list += '<img class = "card-img-top" src = "fotos/' + matriz["arredoar"][i].foto + '" />';
@@ -92,11 +142,17 @@
                                     list += '<img class = "card-img-top" src = "fotos_definidas/' + fotos_definidas(matriz["arredoar"][i].tipo_doa) + '" />';
                                 }
                             }else{
-                                cor = "success";
+                                if(matriz["arredoar"][i].fim_doa <= today){
+                                    cor = "danger";
+                                    list = '<div class = "card cards_invalidos pb-2">';
+                                }else{
+                                    cor = "success";
+                                    list = '<div class = "card cards_arrecadacao pb-2">';
+                                }                                    
 
                                 list += '<img class = "card-img-top" src = "fotos_definidas/' + fotos_definidas(matriz["arredoar"][i].tipo_doa) + '" />';
                             }
-
+                            
                             list += '<div class = "card-body">';
                             list += '<h5 class = "card-title text-left text-' + cor + '">' + matriz["arredoar"][i].oqe + '</h5>';
                             list += '<p class = "card-text">';
@@ -114,11 +170,23 @@
                             list += '<div class = "dropdown">';
                             list += '<button class = "btn btn-outline-' + cor + ' float-left mr-2 dropdown-toggle" type = "button" id = "menu_compartilhar" data-toggle = "dropdown" aria-haspopup = "true" aria-expanded = "false">';
                             list += '<i class = "fa fa-share-alt" aria-hidden = "true"></i> Compartilhar</button>';
-                            list += '<div class = "dropdown-menu" aria-labelledby = "menu_compartilhar">';
-                            list += `<a class = "dropdown-item" id = "face" onclick = "compartilhar('${this.id}', '${matriz["arredoar"][i].desc_doa}', '${matriz["arredoar"][i].foto}', '${matriz["arredoar"][i].tipo_doa}', '${matriz["arredoar"][i].id_doacoes}')">Facebook</a>`;
-                            list += `<a class = "dropdown-item" id = "whats" onclick = "compartilhar('${this.id}', '${matriz["arredoar"][i].desc_doa}', '${matriz["arredoar"][i].foto}', '${matriz["arredoar"][i].tipo_doa}', '${matriz["arredoar"][i].id_doacoes}')">Whatsapp</a>`;
+
+                            if(cor == "primary"){
+                                list += '<div class = "dropdown-menu cards_doacao" aria-labelledby = "menu_compartilhar">';
+                            }else if(cor == "success"){
+                                list += '<div class = "dropdown-menu cards_arrecadacao" aria-labelledby = "menu_compartilhar">';
+                            }else{
+                                list += '<div class = "dropdown-menu cards_invalidos" aria-labelledby = "menu_compartilhar">';
+                            }
+                            
+                            list += `<a class = "dropdown-item" name = "fb_share" type = "box_count" id = "face" onclick = "mudar_componentes(this.id, '${matriz["arredoar"][i].desc_doa}', '${matriz["arredoar"][i].foto}', '${matriz["arredoar"][i].tipo_doa}', '${matriz["arredoar"][i].id_doacoes}')"><img src = "facebook.png" width = "20px" height = "20px" /> Facebook</a>`;
+
+                            list += `<a class = "dropdown-item" id = "whats" onclick = "mudar_componentes(this.id, '${matriz["arredoar"][i].desc_doa}', '${matriz["arredoar"][i].foto}', '${matriz["arredoar"][i].tipo_doa}', '${matriz["arredoar"][i].id_doacoes}')"><img src = "whatsapp.png" width = "20px" height = "20px" /> Whatsapp</a>`;
+
+                            list += `<a class = "dropdown-item" id = "copiar_link" onclick = "mudar_componentes(this.id, '${matriz["arredoar"][i].desc_doa}', '${matriz["arredoar"][i].foto}', '${matriz["arredoar"][i].tipo_doa}', '${matriz["arredoar"][i].id_doacoes}')"><img src = "copiar_link.png" width = "20px" height = "20px" />  Copiar Link</a>`;
+
                             list += '</div></div>';
-                            list += '<a class = "btn btn-' + cor + ' float-left" onclick = "modal_ver_mais(' + matriz["arredoar"][i].id_doacoes + ')">Ver mais</a>';                            
+                            list += '<a class = "btn btn-' + cor + ' float-left text-light" onclick = "modal_ver_mais(' + matriz["arredoar"][i].id_doacoes + ', ' + "'" + cor + "'" + ')">Ver mais</a>';                            
                             list += '</div></div>';
 
                             $("#arredoar").append(list);
@@ -154,7 +222,7 @@
                     data: {id},
                     success: function(data){
                         if(data == 1){
-                            listar_arredoar(ident);
+                            listar_arredoar(ident, 0);
                         }else{
                             alert(data);
                         }
@@ -162,7 +230,7 @@
                 });
             }
 
-            function modal_ver_mais(id){
+            function modal_ver_mais(id, cor){
                 $("#modal_ver_mais").html("");
                 $.ajax({
                     url: "listar_mais_arredoar.php",
@@ -170,15 +238,17 @@
                     data: {id},
                     success: function(matriz){
                         for(i=0; i<matriz["mais_arredoar"].length; i++){
-                            if(matriz["mais_arredoar"][i].oqe_doa == "DOAÇÃO"){
-                                cor = "primary";
-                            }else{
-                                cor = "success";
-                            }
-
                             list = '<div class = "modal fade" id = "ver_mais" tabindex = "-1" role = "dialog" aria-labelledby = "ModalLabel" aria-hidden = "true">';
                             list += '<div class = "modal-dialog modal-lg">';
-                            list += '<div class = "modal-content bg-dark text-light">';
+
+                            if(cor == "primary"){
+                                list += '<div class = "modal-content cards_doacao">';
+                            }else if(cor == "success"){
+                                list += '<div class = "modal-content cards_arrecadacao">';
+                            }else{
+                                list += '<div class = "modal-content cards_invalidos">';
+                            }
+
                             list += '<div class = "modal-header border-' + cor + '">';
                             list += '<h4 class = "modal-title text-' + cor + '" id = "ModalLabel">' + matriz["mais_arredoar"][i].oqe_doa + ' (' + matriz["mais_arredoar"][i].ini_doa + ' à ' + matriz["mais_arredoar"][i].fim_doa + ')</h4>';
                             list += '<button type = "button" class = "close" data-dismiss = "modal" aria-label = "Fechar">';
@@ -186,6 +256,17 @@
                             list += '</button></div>';
                             list += '<div class = "modal-body">';
                             list += '<ul class = "list-group list-group-flush">';
+
+                            if(matriz["mais_arredoar"][i].oqe_doa == "DOAÇÃO"){
+                                if(matriz["mais_arredoar"][i].foto_doa){
+                                    list += '<li class = "list-group-item bg-transparent border-' + cor + '"><img width = "50%" height = "auto" src = "fotos/' + matriz["mais_arredoar"][i].foto_doa + '" /></li>';
+                                }else{
+                                    list += '<li class = "list-group-item bg-transparent border-' + cor + '"><img width = "50%" height = "auto" src = "fotos_definidas/' + fotos_definidas(matriz["mais_arredoar"][i].tipo_doa) + '" /></li>';
+                                }
+                            }else{
+                                list += '<li class = "list-group-item bg-transparent border-' + cor + '"><img width = "50%" height = "auto" src = "fotos_definidas/' + fotos_definidas(matriz["mais_arredoar"][i].tipo_doa) + '" /></li>';
+                            }
+
                             list += '<li class = "list-group-item bg-transparent border-' + cor + '"><h5 class = "text-' + cor + '">Informações Básicas</h5>';
                             list += '<ul class = "list-group list-group-flush">';
 
@@ -279,13 +360,49 @@
                                     echo '<a href = "login.php" class = "alert-link text-info">CADASTRE UMA NOVA!</a></strong></p>';
                                 }
                             ?>    
-                            <p><strong><a href = "lista_locais.php" class = "alert-link text-info">CLIQUE AQUI </a>PARA VER TODAS AS DOAÇÕES (AZUL) E ARRECADAÇÕES (VERDE) CADASTRADAS!</strong></p>
+                            <p><strong><a href = "lista_locais.php" class = "alert-link text-info">CLIQUE AQUI </a>PARA VER NO MAPA TODAS AS DOAÇÕES E ARRECADAÇÕES CADASTRADAS!</strong></p>
                         </h6>
                     </div>
                 </div>
             </div>
 
+            <div class = "alert alert-primary" role = "alert">
+                <form class = "form-inline">
+                    <div class = "form-group">
+                        <strong><h5>Filtros: </h5></strong>
+                    </div>
+
+                    <div class = "form-group mx-sm-1">
+                        <select class = "custom-select" id = "filtro_tipo" onchange = "filtrar()">
+                            <option value = "" disabled selected>Tipo da doação / arrecadação</option>
+                            <option value = "VESTIMENTAS">VESTIMENTAS</option>
+                            <option value = "SAPATOS">SAPATOS</option>
+                            <option value = "ALIMENTÍCIA">ALIMENTÍCIA</option>
+                            <option value = "BRINQUEDOS">BRINQUEDOS</option>
+                            <option value = "LIVROS">LIVROS</option>
+                            <option value = "MONETÁRIA">MONETÁRIA</option>
+                        </select>
+                    </div>
+
+                    <div class = "form-group mx-sm-1">
+                        <select class = "custom-select" id = "filtro_val" onchange = "filtrar()">
+                            <option value = "" disabled selected>Validez da doação / arrecadação</option>
+                            <option value = "VÁLIDA">VÁLIDA</option>
+                            <option value = "INVÁLIDA">INVÁLIDA</option>
+                        </select>
+                    </div>
+
+                    <div class = "form-group mx-sm-1">
+                        <input type = "text" size = "50%" id = "filtro_esp" class = "form-control" placeholder = "+ Específico, como 'Casaco de Pele'..." onkeydown = "filtrar()" />
+                    </div>
+                </form>
+            </div>
+
             <div class = "card-columns" id = "arredoar">
+            </div>
+
+            <div id = "paginacao">
+                <?php include("paginacao_arredoar.php"); ?>
             </div>
         </div>
 

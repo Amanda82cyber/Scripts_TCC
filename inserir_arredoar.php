@@ -1,6 +1,6 @@
 <?php
-    include("conexao.php");
     session_start();
+    include("conexao.php");
 
     $arre_doar = strtoupper($_POST["arredoar"]);
     $desc = strtoupper($_POST["desc"]);
@@ -55,7 +55,7 @@
         $tipo = $q_tipo;
     }
 
-    if($_SESSION["acesso"] == "loja"){
+    if($_SESSION["acesso"][0] == "loja"){
         $var_usu = "cnpj_local";
     }else{
         $var_usu = "CPF_usuario";
