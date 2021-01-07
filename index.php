@@ -94,30 +94,6 @@
                 }
             }
 
-            function compartilhar(lugar, id_arredoar){
-                if(lugar == "face"){
-                    window.location.href = "https://www.facebook.com/sharer/sharer.php?u=http://www.icsar.tk/index.php?ver_mais=" + id_arredoar;
-                }else if(lugar == "whats"){
-                    window.location.href = "https://api.whatsapp.com/send?text=http://www.icsar.tk/index.php?ver_mais=" + id_arredoar;
-                }else{
-                    window.location.href = `https://twitter.com/intent/tweet?url=http://www.icsar.tk/index.php?ver_mais=${id_arredoar}`;
-                    // navigator.clipboard.writeText("http://www.icsar.tk/index.php?ver_mais=" + id_arredoar);
-                }
-            }
-
-            function mudar_componentes(lugar, desc, foto_banco, tipo, id_arredoar){
-                $("#desc_comp_head").html("");
-                $("#desc_comp_head").html('<meta property = "og:description" id = "desc_post" content = "' + desc + '" />');
-
-                if(foto_banco == ""){
-                    $("#desc_comp_head").html('<meta property = "og:image" id = "img_post" itemprop = "image" content = "fotos_definidas/' + fotos_definidas(tipo) + '" />');
-                }else{
-                    $("#desc_comp_head").html('<meta property = "og:image" id = "img_post" itemprop = "image" content = "fotos/' + foto_banco + '" />');
-                }
-
-                compartilhar(lugar, id_arredoar);
-            }
-
             function listar_arredoar(ident, p){
                 $("#arredoar").html("");
                 $.ajax({
@@ -178,11 +154,11 @@
                                 list += '<div class = "dropdown-menu cards_invalidos" aria-labelledby = "menu_compartilhar">';
                             }
                             
-                            list += `<a class = "dropdown-item" name = "fb_share" type = "box_count" id = "face" onclick = "mudar_componentes(this.id, '${matriz["arredoar"][i].desc_doa}', '${matriz["arredoar"][i].foto}', '${matriz["arredoar"][i].tipo_doa}', '${matriz["arredoar"][i].id_doacoes}')"><img src = "facebook.png" width = "20px" height = "20px" /> Facebook</a>`;
+                            list += `<a class = "dropdown-item" name = "fb_share" type = "box_count" id = "face" href = "https://www.facebook.com/sharer/sharer.php?u=http://www.icsar.tk/index.php?ver_mais=${matriz["arredoar"][i].id_doacoes}"><img src = "facebook.png" width = "20px" height = "20px" /> Facebook</a>`;
 
-                            list += `<a class = "dropdown-item" id = "whats" onclick = "mudar_componentes(this.id, '${matriz["arredoar"][i].desc_doa}', '${matriz["arredoar"][i].foto}', '${matriz["arredoar"][i].tipo_doa}', '${matriz["arredoar"][i].id_doacoes}')"><img src = "whatsapp.png" width = "20px" height = "20px" /> Whatsapp</a>`;
+                            list += `<a class = "dropdown-item" id = "whats" href = "https://api.whatsapp.com/send?text=http://www.icsar.tk/index.php?ver_mais=${matriz["arredoar"][i].id_doacoes}"><img src = "whatsapp.png" width = "20px" height = "20px" /> Whatsapp</a>`;
 
-                            list += `<a class = "dropdown-item" id = "twitter" onclick = "mudar_componentes(this.id, '${matriz["arredoar"][i].desc_doa}', '${matriz["arredoar"][i].foto}', '${matriz["arredoar"][i].tipo_doa}', '${matriz["arredoar"][i].id_doacoes}')"><img src = "twitter.png" width = "20px" height = "20px" />  Twitter</a>`;
+                            list += `<a class = "dropdown-item" id = "twitter" href = "https://twitter.com/intent/tweet?url=http://www.icsar.tk/index.php?ver_mais=${matriz["arredoar"][i].id_doacoes}"><img src = "twitter.png" width = "20px" height = "20px" />  Twitter</a>`;
 
                             list += '</div></div>';
                             list += '<a class = "btn btn-' + cor + ' float-left text-light" onclick = "modal_ver_mais(' + matriz["arredoar"][i].id_doacoes + ', ' + "'" + cor + "'" + ')">Ver mais</a>';                            
