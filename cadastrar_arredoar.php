@@ -87,9 +87,11 @@
                                             if($("#arredoar").val() == "DOAÇÃO"){ $("#foto").val(""); $("#label_foto").html("Escolher foto"); };
 
                                             if(id == 0){
-                                                $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
+                                                $("#msn").html("");
+                                                alert("Cadastro efetuado com sucesso!");
                                             }else{
-                                                $("#msn").html("Alteração feita com sucesso!").css("color", "green");
+                                                $("#msn").html("");
+                                                alert("Alteração feita com sucesso!");
                                             }
                                             
                                             $("#salvar").val("Cadastrar");

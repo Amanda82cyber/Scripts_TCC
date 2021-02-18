@@ -108,9 +108,11 @@
                                                 $("#num").val("");
                                                 $("#senha").val("");
                                                 $("#confirmar_senha").val("");
-                                                $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
+                                                $("#msn").html("");
+                                                alert("Cadastro efetuado com sucesso!");
                                             }else if(data == 2){
-                                                $("#msn").html("Alteração efetuada com sucesso!").css("color", "green");
+                                                $("#msn").html("");
+                                                alert("Alteração efetuada com sucesso!");
                                             }else{
                                                 $("#msn").html("Erro: " + data).css("color", "red");
                                             }
@@ -136,9 +138,11 @@
                                                 $("#senha").val("");
                                                 $("#email").val("");
                                                 $("#confirmar_senha").val("");
-                                                $("#msn").html("Cadastro efetuado com sucesso!").css("color", "green");
+                                                $("#msn").html("");
+                                                alert("Cadastro efetuado com sucesso!");
                                             }else if(data == 2){
-                                                $("#msn").html("Alteração efetuada com sucesso!").css("color", "green");
+                                                $("#msn").html("");
+                                                alert("Alteração efetuada com sucesso!");
                                             }else{
                                                 $("#msn").html("Erro: " + data).css("color", "red");
                                             }

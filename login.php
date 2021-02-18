@@ -156,7 +156,7 @@
                                             <div class = "input-group-prepend">
                                                 <span class = "input-group-text bg-transparent border-primary text-primary" id = "basic-addon1">@</span>
                                             </div>
-                                            <input type = "email" class = "form-control" id = "usuario" placeholder = "Usuário" aria-label = "Usuário" aria-describedby = "basic-addon1" />
+                                            <input type = "email" class = "form-control" id = "usuario" placeholder = "E-mail" aria-label = "Usuário" aria-describedby = "basic-addon1" />
                                         </div>
                                     </div>
 
