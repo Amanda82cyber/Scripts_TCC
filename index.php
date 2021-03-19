@@ -15,7 +15,7 @@
     
 ?>
         <!-- Parâmetro sensor é utilizado somente em dispositivos com GPS -->
-        <script src = "https://maps.google.com/maps/api/js?sensor=false&key=AIzaSyAD4ZWbiJdpCv5_5Fv8FHV8c6YCF_JNca8"></script>
+        <script src = "https://maps.google.com/maps/api/js?sensor=false&key=AIzaSyBXU_DfZtb8BfDOfqLQVHT3ufJWZ31PGzA"></script>
         
         <script>
             var filtro1 = "";
@@ -59,7 +59,7 @@
 
             function calcula_distancia(destino){
                 if($("#pesq").val() == ""){
-                    $("#msn_google").html("Os dois campos devem estar preenchidos para ser feita a pesquisa!").css("color", "red");
+                    $("#msn_google").html("O campo deve estar preenchido para ser feita a pesquisa!").css("color", "red");
                 }else{
                     // if($("#mode").val() == "DRIVING"){
                     //     modo_viagem =  google.maps.TravelMode.DRIVING;
@@ -88,7 +88,7 @@
                 // Verificar o status.
                 if (status == google.maps.DistanceMatrixStatus.OK) { // Se o status for "OK".
                     //Atualizar o mapa.
-                    $("#map").attr("src", "https://maps.google.com/maps?saddr=" + response.originAddresses + "&daddr=" + response.destinationAddresses + "&output=embed&key=AIzaSyAD4ZWbiJdpCv5_5Fv8FHV8c6YCF_JNca8");
+                    $("#map").attr("src", "https://maps.google.com/maps?saddr=" + response.originAddresses + "&daddr=" + response.destinationAddresses + "&output=embed&key=AIzaSyBXU_DfZtb8BfDOfqLQVHT3ufJWZ31PGzA");
                 }else{
                     $("#msn_google").html(status).css("color", "red");
                 }
@@ -216,9 +216,9 @@
                             list = '<div class = "modal fade" id = "ver_mais" tabindex = "-1" role = "dialog" aria-labelledby = "ModalLabel" aria-hidden = "true">';
                             list += '<div class = "modal-dialog modal-lg">';
 
-                            if(matriz["mais_arredoar"][i].oqe_doa == "DOAÇÃO"){
+                            if(cor == "primary"){
                                 list += '<div class = "modal-content cards_doacao">';
-                            }else if(matriz["mais_arredoar"][i].oqe_doa == "ARRECADAÇÃO"){
+                            }else if(cor == "success"){
                                 list += '<div class = "modal-content cards_arrecadacao">';
                             }else{
                                 list += '<div class = "modal-content cards_invalidos">';

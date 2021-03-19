@@ -298,11 +298,11 @@
 
                     <div class = "modal fade" id = "nova_campanha" tabindex = "-1" role = "dialog" aria-labelledby = "label" aria-hidden = "true">
                         <div class = "modal-dialog" role = "document">
-                            <div class = "modal-content bg-dark text-light">
-                                <div class = "modal-header border-primary">
-                                    <h5 class = "modal-title text-primary" id = "label">Nova Campanha Solidária</h5>
+                            <div class = "modal-content cards_doacao">
+                                <div class = "modal-header head_cadastros">
+                                    <h5 class = "modal-title" id = "label">Nova Campanha Solidária</h5>
                                     <button type = "button" class = "close" data-dismiss = "modal" aria-label = "Fechar">
-                                        <span aria-hidden = "true" class = "text-primary">&times;</span>
+                                        <span aria-hidden = "true" class = "text-light">&times;</span>
                                     </button>
                                 </div>
                                 

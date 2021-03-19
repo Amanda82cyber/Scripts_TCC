@@ -28,7 +28,7 @@
                 axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
                     params: {
                         address: location,
-                        key: 'AIzaSyAD4ZWbiJdpCv5_5Fv8FHV8c6YCF_JNca8'
+                        key: 'AIzaSyBXU_DfZtb8BfDOfqLQVHT3ufJWZ31PGzA'
                     }
                 })
                 .then(function(response){
@@ -229,7 +229,7 @@
             }
         </script>
 
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAD4ZWbiJdpCv5_5Fv8FHV8c6YCF_JNca8&callback=initMap"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXU_DfZtb8BfDOfqLQVHT3ufJWZ31PGzA&callback=initMap"></script>
 
     </body>
 </html>
